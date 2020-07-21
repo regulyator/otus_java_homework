@@ -190,12 +190,12 @@ public final class DIYArrayList<T> implements List<T> {
 
             @Override
             public boolean hasNext() {
-                int currentPos = i;
+                return currentPos != size();
             }
 
             @Override
             public T next() {
-                if (currentPos >= elements.length) {
+                if (currentPos >= size()) {
                     throw new NoSuchElementException();
                 }
                 currentPos++;
@@ -204,22 +204,26 @@ public final class DIYArrayList<T> implements List<T> {
 
             @Override
             public boolean hasPrevious() {
-                return false;
+                return currentPos != 0;
             }
 
             @Override
             public T previous() {
-                return null;
+                if (currentPos == 0) {
+                    throw new NoSuchElementException();
+                }
+                currentPos--;
+                return elements[currentPos];
             }
 
             @Override
             public int nextIndex() {
-                return 0;
+                return currentPos + 1;
             }
 
             @Override
             public int previousIndex() {
-                return 0;
+                return currentPos - 1;
             }
 
             @Override
