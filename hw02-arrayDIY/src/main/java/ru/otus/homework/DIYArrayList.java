@@ -75,7 +75,7 @@ public final class DIYArrayList<T> implements List<T> {
     @Override
     public boolean add(T t) {
         Objects.requireNonNull(t);
-        calculateCapacity(1);
+        checkCapacityAndResizeIfNeeded(1);
         elements[size++] = t;
         modCounter++;
         return true;
@@ -115,7 +115,7 @@ public final class DIYArrayList<T> implements List<T> {
         }
         Object[] addedArray = c.toArray();
         Object[] oldElements = this.elements;
-        calculateCapacity(addedArray.length);
+        checkCapacityAndResizeIfNeeded(addedArray.length);
         System.arraycopy(addedArray, 0, oldElements, this.size, c.size());
         modCounter++;
         size = size + addedArray.length;
@@ -124,7 +124,7 @@ public final class DIYArrayList<T> implements List<T> {
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -158,7 +158,7 @@ public final class DIYArrayList<T> implements List<T> {
     @Override
     public void add(int index, T element) {
         indexValidityCheck(index);
-        calculateCapacity(1);
+        checkCapacityAndResizeIfNeeded(1);
         // "раздвигаем" массив для вставки
         System.arraycopy(elements, index, elements, index + 1, size - index);
         elements[index] = element;
@@ -322,7 +322,7 @@ public final class DIYArrayList<T> implements List<T> {
      *
      * @param needAddCap
      */
-    private void calculateCapacity(int needAddCap) {
+    private void checkCapacityAndResizeIfNeeded(int needAddCap) {
         // удостоверимся что не переполним int
         int newNeedCapacity = Math.addExact(size(), needAddCap);
         if (elements.length < newNeedCapacity) {
