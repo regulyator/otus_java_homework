@@ -1,8 +1,8 @@
-package ru.otus.homework.proccessors.testproccesor;
+package ru.otus.homework.testworker.testproccesor;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.otus.homework.proccessors.util.TestBatch;
+import ru.otus.homework.testworker.util.TestBatch;
 
 import java.util.List;
 import java.util.Map;
@@ -60,10 +60,8 @@ class DefaultTestProcessorImplTest {
 
         assertEquals(testForTestClassNames.size(), testBatches.size());
 
-        testBatches.forEach(testBatch -> {
-            assertTrue(Objects.nonNull(testBatch.getTestMethods())
-                    && testBatch.getTestMethods().size() > 0);
-        });
+        testBatches.forEach(testBatch -> assertTrue(Objects.nonNull(testBatch.getTestMethods())
+                && testBatch.getTestMethods().size() > 0));
     }
 
 
@@ -75,7 +73,7 @@ class DefaultTestProcessorImplTest {
 
         testBatches.forEach(testBatch -> {
             testBatch.getTestMethods().forEach(method -> {
-                assertTrue(Objects.nonNull(method));
+                assertEquals(testBatch.getTestClass(), method.getDeclaringClass());
                 assertFalse(invalidTestClassNames.contains(method.getDeclaringClass().getCanonicalName()));
             });
         });

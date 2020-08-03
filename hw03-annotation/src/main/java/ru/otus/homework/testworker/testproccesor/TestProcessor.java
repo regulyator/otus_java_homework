@@ -1,6 +1,6 @@
-package ru.otus.homework.proccessors.testproccesor;
+package ru.otus.homework.testworker.testproccesor;
 
-import ru.otus.homework.proccessors.util.TestBatch;
+import ru.otus.homework.testworker.util.TestBatch;
 
 import java.util.List;
 import java.util.Map;

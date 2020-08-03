@@ -1,4 +1,4 @@
-package ru.otus.homework.proccessors;
+package ru.otus.homework.testworker.testrunner;
 
 public interface TestRunner {
 

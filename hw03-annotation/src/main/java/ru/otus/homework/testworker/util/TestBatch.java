@@ -1,4 +1,4 @@
-package ru.otus.homework.proccessors.util;
+package ru.otus.homework.testworker.util;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -8,14 +8,20 @@ public class TestBatch {
     private List<Method> beforeMethods;
     private List<Method> afterMethods;
     private List<Method> testMethods;
+    private final Class testClass;
 
-    public TestBatch() {
+    public TestBatch(Class testClass) {
+        this.testClass = testClass;
     }
 
-    public TestBatch(List<Method> beforeMethods, List<Method> afterMethods, List<Method> testMethods) {
+    public TestBatch(List<Method> beforeMethods,
+                     List<Method> afterMethods,
+                     List<Method> testMethods,
+                     Class testClass) {
         this.beforeMethods = beforeMethods;
         this.afterMethods = afterMethods;
         this.testMethods = testMethods;
+        this.testClass = testClass;
     }
 
     public List<Method> getBeforeMethods() {
@@ -40,5 +46,9 @@ public class TestBatch {
 
     public void setTestMethods(List<Method> testMethods) {
         this.testMethods = testMethods;
+    }
+
+    public Class getTestClass() {
+        return testClass;
     }
 }

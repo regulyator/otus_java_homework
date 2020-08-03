@@ -13,7 +13,7 @@ public class DIYTest {
 
     @Test
     public void doTest() {
-
+        System.out.println("diytest");
     }
 
 

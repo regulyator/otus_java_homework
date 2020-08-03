@@ -1,4 +1,4 @@
-package ru.otus.homework.proccessors.testproccesor;
+package ru.otus.homework.testworker.testproccesor;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
@@ -7,7 +7,7 @@ import org.reflections.util.ConfigurationBuilder;
 import ru.otus.homework.annotations.After;
 import ru.otus.homework.annotations.Before;
 import ru.otus.homework.annotations.Test;
-import ru.otus.homework.proccessors.util.TestBatch;
+import ru.otus.homework.testworker.util.TestBatch;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -53,12 +53,12 @@ public class DefaultTestProcessorImpl implements TestProcessor {
     public List<TestBatch> generateTestBatches() {
         this.testBatches.clear();
 
-        this.getAllTestClasses().forEach((s, aClass) -> {
-            if (Objects.nonNull(aClass)) {
-                Method[] clazzMethods = aClass.getDeclaredMethods();
+        this.getAllTestClasses().forEach((testClassName, testClass) -> {
+            if (Objects.nonNull(testClass)) {
+                Method[] clazzMethods = testClass.getDeclaredMethods();
                 if (clazzMethods.length > 0
                         && Arrays.stream(clazzMethods).anyMatch(method -> method.isAnnotationPresent(Test.class))) {
-                    generateTestBatch(clazzMethods);
+                    generateTestBatch(clazzMethods, testClass);
 
                 }
             }
@@ -67,8 +67,8 @@ public class DefaultTestProcessorImpl implements TestProcessor {
         return this.testBatches;
     }
 
-    private void generateTestBatch(Method[] clazzMethods) {
-        TestBatch testBatch = new TestBatch();
+    private void generateTestBatch(Method[] clazzMethods, Class testClass) {
+        TestBatch testBatch = new TestBatch(testClass);
 
         testBatch.setBeforeMethods(
                 Arrays.stream(clazzMethods)
