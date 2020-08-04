@@ -4,11 +4,15 @@ import ru.otus.homework.annotations.After;
 import ru.otus.homework.annotations.Before;
 import ru.otus.homework.annotations.Test;
 
+/**
+ * Класс "теста" для примера
+ * полностью рабочий
+ */
 public class DIYTest {
 
     @Before
-    public void doBefore(){
-
+    public void doBefore() {
+        System.out.println("before");
     }
 
     @Test
@@ -18,7 +22,7 @@ public class DIYTest {
 
 
     @After
-    public void doAfter(){
-
+    public void doAfter() {
+        System.out.println("after");
     }
 }

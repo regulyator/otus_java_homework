@@ -4,24 +4,21 @@ import ru.otus.homework.annotations.After;
 import ru.otus.homework.annotations.Before;
 import ru.otus.homework.annotations.Test;
 
-public class DIYTest1 {
+public class DIYTest7 {
+
 
     @Before
     public void doBefore1() {
-        throw new NullPointerException();
+
     }
 
     @Test
-    public void doTest1() {
+    public void doTest1(String testParam) {
 
     }
 
     @After
     public void doAfter1() {
-        this.someUnAnnotatedMethod();
-    }
-
-    public void someUnAnnotatedMethod() {
 
     }
 }

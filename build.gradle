@@ -28,6 +28,7 @@ allprojects {
             dependency("org.apache.commons:commons-lang3:${Versions.apacheLang}")
             dependency("org.reflections:reflections:${Versions.ronmamoReflections}")
             dependency("org.junit.jupiter:junit-jupiter-api:${Versions.jupiterTest}")
+            dependency("org.mockito:mockito-core:${Versions.mockito}")
 
 
         }

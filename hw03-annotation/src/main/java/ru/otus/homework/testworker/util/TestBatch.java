@@ -1,23 +1,32 @@
 package ru.otus.homework.testworker.util;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+/**
+ * класс для хранения пакетов с тестами
+ * testClass - сам класс темта
+ * beforeMethods - методы @Before
+ * afterMethods - методы @After
+ * testMethods - методы @Test
+ */
 public class TestBatch {
 
+    private final Class<?> testClass;
     private List<Method> beforeMethods;
     private List<Method> afterMethods;
     private List<Method> testMethods;
-    private final Class testClass;
 
-    public TestBatch(Class testClass) {
+    public TestBatch(Class<?> testClass) {
         this.testClass = testClass;
     }
 
     public TestBatch(List<Method> beforeMethods,
                      List<Method> afterMethods,
                      List<Method> testMethods,
-                     Class testClass) {
+                     Class<?> testClass) {
         this.beforeMethods = beforeMethods;
         this.afterMethods = afterMethods;
         this.testMethods = testMethods;
@@ -25,7 +34,7 @@ public class TestBatch {
     }
 
     public List<Method> getBeforeMethods() {
-        return beforeMethods;
+        return Objects.isNull(beforeMethods) ? beforeMethods = new ArrayList<>() : beforeMethods;
     }
 
     public void setBeforeMethods(List<Method> beforeMethods) {
@@ -33,7 +42,7 @@ public class TestBatch {
     }
 
     public List<Method> getAfterMethods() {
-        return afterMethods;
+        return Objects.isNull(afterMethods) ? afterMethods = new ArrayList<>() : afterMethods;
     }
 
     public void setAfterMethods(List<Method> afterMethods) {
@@ -41,14 +50,14 @@ public class TestBatch {
     }
 
     public List<Method> getTestMethods() {
-        return testMethods;
+        return Objects.isNull(testMethods) ? testMethods = new ArrayList<>() : testMethods;
     }
 
     public void setTestMethods(List<Method> testMethods) {
         this.testMethods = testMethods;
     }
 
-    public Class getTestClass() {
+    public Class<?> getTestClass() {
         return testClass;
     }
 }

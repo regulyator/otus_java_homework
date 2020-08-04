@@ -1,7 +1,7 @@
 package ru.otus.homework.testfortest;
 
-import ru.otus.homework.annotations.Before;
 import ru.otus.homework.annotations.Test;
+import ru.otus.homework.exeptions.TestFailException;
 
 public class DIYTest4 {
 
@@ -12,6 +12,6 @@ public class DIYTest4 {
 
     @Test
     public void doTest2() {
-
+        throw new TestFailException("TEST FAIL");
     }
 }

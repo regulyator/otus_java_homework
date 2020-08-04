@@ -3,16 +3,12 @@ package ru.otus.homework.testfortest;
 import ru.otus.homework.annotations.After;
 import ru.otus.homework.annotations.Before;
 import ru.otus.homework.annotations.Test;
-import ru.otus.homework.exeptions.TestFailException;
 
-public class DIYTest2 {
+public class DIYTest8 {
 
-    public DIYTest2() {
-        throw new NullPointerException();
-    }
 
     @Before
-    public void doBefore1() {
+    public void doBefore1(String param) {
 
     }
 
@@ -23,13 +19,13 @@ public class DIYTest2 {
     }
 
     @Test
-    public void doTest1() {
+    public void doTest1(String param1, String param2) {
 
     }
 
     @Test
     public void doTest2() {
-        throw new TestFailException("TEST FAIL");
+
     }
 
     @After
@@ -38,7 +34,7 @@ public class DIYTest2 {
     }
 
     @After
-    public void doAfter2() {
+    public void doAfter2(int... params) {
 
     }
 }
