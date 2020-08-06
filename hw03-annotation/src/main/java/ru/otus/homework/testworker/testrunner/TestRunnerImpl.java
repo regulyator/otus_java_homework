@@ -85,27 +85,26 @@ public class TestRunnerImpl implements TestRunner {
                 System.out.println(testClassInstance);
 
                 // выполняем методы @Before
-                testBatch.getBeforeMethods().forEach(beforeMethod -> runBeforeMethod(beforeMethod, testClassInstance));
+                testBatch.getBeforeMethods().forEach(beforeMethod -> runMethod(beforeMethod, testClassInstance));
 
                 try {
                     // выполняем сам тест
-                    runTestMethod(testMethod, testClassInstance);
+                    runMethod(testMethod, testClassInstance);
                     tmpTestSuccess++;
-                } catch (TestMethodInvocationException | TestFailException ex) {
+                } catch (TestFailException ex) {
                     tmpTestFail++;
                 }
 
                 // выполняем методы @After
-                testBatch.getAfterMethods().forEach(afterMethod -> runAfterMethod(afterMethod, testClassInstance));
+                testBatch.getAfterMethods().forEach(afterMethod -> runMethod(afterMethod, testClassInstance));
 
                 System.out.println("================================================");
-            } catch (BeforeTestMethodInvocationException | AfterTestMethodInvocationException | TestClassInstantiationException ex) {
+            } catch (TestFailException ex) {
                 // если вываливаемся на инстанцировании ИЛИ методах @Before @After - то считаем что все тесты в классе упали
                 System.out.println("================================================");
                 tmpTestFail = 0;
                 tmpTestSuccess = 0;
                 testFail += testBatch.getTestMethods().size();
-                ex.printStackTrace();
                 break;
             }
 
@@ -118,27 +117,11 @@ public class TestRunnerImpl implements TestRunner {
 
     }
 
-    private void runBeforeMethod(Method beforeMethod, Object testClassInstance) {
+    private void runMethod(Method beforeMethod, Object testClassInstance) {
         try {
             invokeMethod(beforeMethod, testClassInstance);
         } catch (InvocationTargetException | IllegalAccessException e) {
-            throw new BeforeTestMethodInvocationException("Error when invoke BEFORE method!", e);
-        }
-    }
-
-    private void runAfterMethod(Method afterMethod, Object testClassInstance) {
-        try {
-            invokeMethod(afterMethod, testClassInstance);
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            throw new AfterTestMethodInvocationException("Error when invoke AFTER method!", e);
-        }
-    }
-
-    private void runTestMethod(Method testMethod, Object testClassInstance) {
-        try {
-            invokeMethod(testMethod, testClassInstance);
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            throw new TestMethodInvocationException("Test FAIL!", e);
+            throw new TestFailException("Test FAIL!", e);
         }
     }
 

@@ -23,7 +23,7 @@ public class TestProcessorImpl implements TestProcessor {
     // тут храним найденные классы
     private final Map<String, Class<?>> testClasses = new HashMap<>();
     // сгенерерованные "пакеты" с тестами
-    private final List<TestBatch> testBatches = new ArrayList<>();
+    private List<TestBatch> testBatches;
     private final String rootTestPackage;
     // для сканирования по пакету
     private final Reflections reflectionsPackageScanner;
@@ -73,7 +73,7 @@ public class TestProcessorImpl implements TestProcessor {
      */
     @Override
     public List<TestBatch> generateTestBatches() {
-        this.testBatches.clear();
+        this.testBatches = new ArrayList<>();
         if (testClasses.isEmpty()) {
             getAllTestClasses();
         }

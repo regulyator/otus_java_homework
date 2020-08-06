@@ -1,6 +1,6 @@
 package ru.otus.homework.testworker.util.reflection;
 
-import ru.otus.homework.exeptions.TestClassInstantiationException;
+import ru.otus.homework.exeptions.TestFailException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -40,13 +40,13 @@ public class ReflectionUtil {
      *
      * @param clazz класс
      * @return экзэмпляр класса
-     * @throws TestClassInstantiationException
+     * @throws TestFailException
      */
-    public static Object getClassInstance(Class<?> clazz) throws TestClassInstantiationException {
+    public static Object getClassInstance(Class<?> clazz) throws TestFailException {
         try {
             return clazz.getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new TestClassInstantiationException("", e);
+            throw new TestFailException("Error when gettest class instance", e);
         }
     }
 
