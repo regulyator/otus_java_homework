@@ -4,7 +4,6 @@ import com.sun.management.GarbageCollectionNotificationInfo;
 
 import javax.management.NotificationEmitter;
 import javax.management.NotificationListener;
-import javax.management.openmbean.CompositeData;
 import java.lang.management.GarbageCollectorMXBean;
 import java.util.HashMap;
 import java.util.List;
