@@ -7,15 +7,16 @@ sourceCompatibility = JavaVersion.VERSION_14
 targetCompatibility = JavaVersion.VERSION_14
 
 dependencies {
-    compile project(':hw05-AOPAgent')
 }
 
 shadowJar {
-    archiveBaseName.set('AOPOtusHomeWork')
+    archiveBaseName.set('AOPAgentOtusHomeWork')
     archiveVersion.set('0.1')
     archiveClassifier.set('')
     manifest {
-        attributes 'Main-Class': "ru.otus.homework.AOPApp"
+        attributes (
+                'PreMain-Class': 'ru.otus.homework.hw10.AOPAgentApp'
+        )
     }
 }
 
