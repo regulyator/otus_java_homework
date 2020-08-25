@@ -7,6 +7,12 @@ sourceCompatibility = JavaVersion.VERSION_14
 targetCompatibility = JavaVersion.VERSION_14
 
 dependencies {
+    implementation('org.ow2.asm:asm')
+
+    testImplementation ('org.junit.jupiter:junit-jupiter-api')
+    testImplementation ('org.mockito:mockito-core')
+    testImplementation ('org.ow2.asm:asm-util')
+    testRuntimeOnly ('org.junit.jupiter:junit-jupiter-engine')
 }
 
 shadowJar {
@@ -14,9 +20,7 @@ shadowJar {
     archiveVersion.set('0.1')
     archiveClassifier.set('')
     manifest {
-        attributes (
-                'PreMain-Class': 'ru.otus.homework.hw10.AOPAgentApp'
-        )
+        attributes 'Premain-Class': 'ru.otus.homework.agent.AOPAgentApp'
     }
 }
 
