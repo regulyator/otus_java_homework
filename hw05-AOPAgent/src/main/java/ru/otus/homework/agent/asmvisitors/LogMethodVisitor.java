@@ -13,4 +13,9 @@ public class LogMethodVisitor extends MethodVisitor {
     public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
         return new LogAnnotationVisitor();
     }
+
+    @Override
+    public void visitCode() {
+        super.visitCode();
+    }
 }

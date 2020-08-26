@@ -14,4 +14,6 @@ public class LogAnnotationVisitor extends AnnotationVisitor {
         System.out.println(name);
         super.visit(name, value);
     }
+
+
 }

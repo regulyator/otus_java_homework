@@ -23,13 +23,17 @@ public class TestAnnotationTransformer implements ClassFileTransformer {
 
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
+        if(className.contains("SomeBoringClass")){
+            System.out.println("sdfsdfsdf");
+        }
+        LogClassVisitor cv = new LogClassVisitor();
         ClassReader cr = null;
         try {
             cr = new ClassReader(className);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        cr.accept(new LogClassVisitor(), 0);
+        cr.accept(cv, 0);
 
 
 
