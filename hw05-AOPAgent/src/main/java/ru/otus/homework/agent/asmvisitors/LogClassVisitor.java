@@ -16,4 +16,6 @@ public class LogClassVisitor extends ClassVisitor {
     public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
         return new LogMethodVisitor();
     }
+
+
 }
