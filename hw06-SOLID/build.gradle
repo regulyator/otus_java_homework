@@ -10,6 +10,7 @@ dependencies {
     testImplementation('org.junit.jupiter:junit-jupiter-api')
     testImplementation('org.mockito:mockito-core')
     testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine')
+    testImplementation('org.mockito:mockito-junit-jupiter')
 }
 
 shadowJar {
@@ -18,6 +19,13 @@ shadowJar {
     archiveClassifier.set('')
     manifest {
         attributes 'Main-Class': "ru.otus.homework.ATMApp"
+    }
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
     }
 }
 
