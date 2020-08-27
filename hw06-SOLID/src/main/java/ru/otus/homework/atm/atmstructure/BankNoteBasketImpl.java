@@ -4,8 +4,10 @@ import ru.otus.homework.atm.cash.BankNote;
 
 import java.util.Objects;
 
+/**
+ * корзина не дозагружается, т.е. нужно сразу запонять
+ */
 public class BankNoteBasketImpl implements BankNoteBasket<BankNote> {
-
 
     private final BankNote bankNote;
     private int loadedBanknotes;
@@ -39,6 +41,12 @@ public class BankNoteBasketImpl implements BankNoteBasket<BankNote> {
         return this.bankNote.getBanknoteNominal();
     }
 
+    /**
+     * небольшая проверка что не вылезаем за доступный лимит
+     *
+     * @param banknotesToIssue сколько нужно выдать
+     * @return если проверку прошли - выдаем сколько нужно, если нет, то ничего не выдаем
+     */
     private int giveBanknotes(int banknotesToIssue) {
         if (banknotesToIssue > this.loadedBanknotes || banknotesToIssue <= 0) {
             return 0;
