@@ -62,9 +62,9 @@ class BankNoteBasketTest {
 
     @Test
     void testNullConstructorArgument() {
-        assertThrows(IllegalArgumentException.class, () -> new BankNoteBasketImpl(10,null));
-        assertThrows(IllegalArgumentException.class, () -> new BankNoteBasketImpl(0,bankNote));
-        assertThrows(IllegalArgumentException.class, () -> new BankNoteBasketImpl(-2,bankNote));
+        assertThrows(IllegalArgumentException.class, () -> new BankNoteBasketImpl(10, null));
+        assertThrows(IllegalArgumentException.class, () -> new BankNoteBasketImpl(0, bankNote));
+        assertThrows(IllegalArgumentException.class, () -> new BankNoteBasketImpl(-2, bankNote));
 
     }
 }

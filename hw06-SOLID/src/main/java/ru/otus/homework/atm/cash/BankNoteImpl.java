@@ -8,6 +8,7 @@ public class BankNoteImpl implements BankNote {
 
     private final BanknotesNominalEnum banknoteNominal;
 
+    //не даем инициализировать банкноту без номинала
     public BankNoteImpl(BanknotesNominalEnum banknoteNominal) {
         if (Objects.isNull(banknoteNominal))
             throw new IllegalArgumentException("banknoteNominal is null");
