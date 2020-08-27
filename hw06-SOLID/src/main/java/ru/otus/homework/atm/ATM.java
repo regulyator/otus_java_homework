@@ -1,13 +1,13 @@
 package ru.otus.homework.atm;
 
-import ru.otus.homework.atm.model.CashNominalEnum;
+import ru.otus.homework.atm.cash.BankNote;
 
 import java.util.Map;
 
-public interface ATM<T extends CashNominalEnum> {
+public interface ATM {
 
-    Map<T, Integer> giveCash(int cashToGive);
+    Map<BankNote, Integer> giveCash(int summToGive);
 
-    Map<T, Integer> getRemainCash();
+    Integer getRemainCash();
 
 }
