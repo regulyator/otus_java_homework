@@ -8,7 +8,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.homework.atm.cash.BankNote;
 import ru.otus.homework.atm.cash.banknotemeta.BanknotesNominalEnum;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -124,12 +123,7 @@ class BankNoteDispenserTest {
         Mockito.when(bankNoteBasket500new.getBasketBankNoteInfo()).then(invocation -> bankNote500);
         Mockito.when(bankNoteBasket5000.getBasketBankNoteInfo()).then(invocation -> bankNote5000);
 
-        List<BankNoteBasket<BankNote>> baskets = new ArrayList<>();
-        baskets.add(bankNoteBasket100);
-        baskets.add(bankNoteBasket500);
-        baskets.add(bankNoteBasket50);
-
-        BankNoteDispenser<BankNote> bankNoteDispenser = new BankNoteDispenserImpl(baskets);
+        BankNoteDispenser<BankNote> bankNoteDispenser = new BankNoteDispenserImpl(List.of(bankNoteBasket50, bankNoteBasket100, bankNoteBasket500));
 
         assertEquals(bankNoteBasket500, bankNoteDispenser.replaceOrAddBasket(bankNoteBasket500new));
         assertEquals(bankNoteBasket5000, bankNoteDispenser.replaceOrAddBasket(bankNoteBasket5000));
