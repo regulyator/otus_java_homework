@@ -6,7 +6,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.homework.atm.atmstructure.BankNoteDispenser;
-import ru.otus.homework.atm.cash.BankNote;
 import ru.otus.homework.atm.cash.banknotemeta.BanknotesNominalEnum;
 import ru.otus.homework.atm.exceptions.IncorrectSumOrNominalException;
 
@@ -21,17 +20,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ExtendWith(MockitoExtension.class)
 class ATMTest {
     @Mock
-    BankNoteDispenser<BankNote> bankNoteDispenser;
-    @Mock
-    BankNote bankNote5000;
-    @Mock
-    BankNote bankNote500;
-
+    BankNoteDispenser bankNoteDispenser;
     ATM atm;
 
     @Test
     void giveCashTestCheckSum() {
-        Mockito.when(bankNoteDispenser.getCashNominals()).then(invocation -> List.of(bankNote5000, bankNote500));
+        Mockito.when(bankNoteDispenser.getCashNominals()).then(invocation -> List.of(BanknotesNominalEnum.BANK_NOTE_NOMINAL_5000,
+                BanknotesNominalEnum.BANK_NOTE_NOMINAL_500));
         atm = new ATMImpl(bankNoteDispenser);
 
         assertThrows(IncorrectSumOrNominalException.class, () -> atm.giveCash(50));
@@ -39,7 +34,8 @@ class ATMTest {
 
     @Test
     void giveCashTestCheckNominal() {
-        Mockito.when(bankNoteDispenser.getCashNominals()).then(invocation -> List.of(bankNote5000, bankNote500));
+        Mockito.when(bankNoteDispenser.getCashNominals()).then(invocation -> List.of(BanknotesNominalEnum.BANK_NOTE_NOMINAL_5000,
+                BanknotesNominalEnum.BANK_NOTE_NOMINAL_500));
         Mockito.when(bankNoteDispenser.getRemainCash()).thenAnswer(invocation -> getTestCashMap());
         atm = new ATMImpl(bankNoteDispenser);
 
@@ -52,7 +48,7 @@ class ATMTest {
                                 && BanknotesNominalEnum.BANK_NOTE_NOMINAL_500.getValue() != banknotesNominalEnum.getValue()
                                 && BanknotesNominalEnum.BANK_NOTE_NOMINAL_1000.getValue() != banknotesNominalEnum.getValue()
                                 && BanknotesNominalEnum.BANK_NOTE_NOMINAL_2000.getValue() != banknotesNominalEnum.getValue()))
-                .forEach(banknotesNominalEnum -> assertThrows(IncorrectSumOrNominalException.class, () -> atm.giveCash(banknotesNominalEnum.getValue().value())));
+                .forEach(banknotesNominalEnum -> assertThrows(IncorrectSumOrNominalException.class, () -> atm.giveCash(banknotesNominalEnum.getValue())));
     }
 
     @Test
@@ -68,13 +64,10 @@ class ATMTest {
         assertThrows(IllegalArgumentException.class, () -> new ATMImpl(null));
     }
 
-    Map<BankNote, Integer> getTestCashMap() {
-        Map<BankNote, Integer> remainCash = new HashMap<>();
-        remainCash.put(bankNote500, 100);
-        remainCash.put(bankNote5000, 50);
-
-        Mockito.when(bankNote500.getBanknoteNominal()).then(invocation -> BanknotesNominalEnum.BANK_NOTE_NOMINAL_500.getValue().value());
-        Mockito.when(bankNote5000.getBanknoteNominal()).then(invocation -> BanknotesNominalEnum.BANK_NOTE_NOMINAL_5000.getValue().value());
+    Map<BanknotesNominalEnum, Integer> getTestCashMap() {
+        Map<BanknotesNominalEnum, Integer> remainCash = new HashMap<>();
+        remainCash.put(BanknotesNominalEnum.BANK_NOTE_NOMINAL_500, 100);
+        remainCash.put(BanknotesNominalEnum.BANK_NOTE_NOMINAL_5000, 50);
 
         return remainCash;
     }

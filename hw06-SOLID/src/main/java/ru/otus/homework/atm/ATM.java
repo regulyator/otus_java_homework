@@ -1,6 +1,6 @@
 package ru.otus.homework.atm;
 
-import ru.otus.homework.atm.cash.BankNote;
+import ru.otus.homework.atm.cash.banknotemeta.BanknotesNominalEnum;
 
 import java.util.Map;
 
@@ -15,7 +15,13 @@ public interface ATM {
      * @param sumToGive сумма для выдачи
      * @return мапу с купюрами и количеством купюр
      */
-    Map<BankNote, Integer> giveCash(int sumToGive);
+    Map<BanknotesNominalEnum, Integer> giveCash(int sumToGive);
+
+    /**
+     * @param sumToAdd сумма для добавления
+     * @return мапу с купюрами и количеством купюр
+     */
+    Map<BanknotesNominalEnum, Integer> addCash(int sumToAdd);
 
     /**
      * возвращает весь доступный достаток в ячейках
@@ -23,5 +29,6 @@ public interface ATM {
      * @return сумму
      */
     Integer getRemainCash();
+
 
 }

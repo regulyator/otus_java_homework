@@ -1,13 +1,11 @@
 package ru.otus.homework.atm.atmstructure;
 
-import ru.otus.homework.atm.cash.BankNote;
+import ru.otus.homework.atm.cash.banknotemeta.BanknotesNominalEnum;
 
 /**
  * Корзина для купюр
- *
- * @param <T>
  */
-public interface BankNoteBasket<T extends BankNote> {
+public interface BankNoteBasket {
 
     /**
      * выдаем купюры
@@ -18,6 +16,13 @@ public interface BankNoteBasket<T extends BankNote> {
     int getBanknotes(int banknotesToIssue);
 
     /**
+     * добавляем купюры
+     *
+     * @param banknotesToAdd купюры для добавлнения
+     */
+    int addBanknotes(int banknotesToAdd);
+
+    /**
      * @return остаток
      */
     int getRemainBanknotes();
@@ -25,7 +30,7 @@ public interface BankNoteBasket<T extends BankNote> {
     /**
      * @return тип банкнот
      */
-    T getBasketBankNoteInfo();
+    BanknotesNominalEnum getBasketBankNoteInfo();
 
     /**
      * @return номинал банкнот

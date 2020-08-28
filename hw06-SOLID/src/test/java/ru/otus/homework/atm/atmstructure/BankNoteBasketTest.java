@@ -2,23 +2,17 @@ package ru.otus.homework.atm.atmstructure;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import ru.otus.homework.atm.cash.BankNote;
 import ru.otus.homework.atm.cash.banknotemeta.BanknotesNominalEnum;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class BankNoteBasketTest {
-    private BankNoteBasket<BankNote> bankNoteBasket;
-    private BankNote bankNote;
+    private BankNoteBasket bankNoteBasket;
 
     @BeforeEach
     void setUp() {
-        bankNote = Mockito.mock(BankNote.class);
-        Mockito.when(bankNote.getBanknoteNominal()).then(invocation -> BanknotesNominalEnum.BANK_NOTE_NOMINAL_500.getValue().value());
-
-        bankNoteBasket = new BankNoteBasketImpl(100, bankNote);
+        bankNoteBasket = new BankNoteBasketImpl(100, BanknotesNominalEnum.BANK_NOTE_NOMINAL_500);
     }
 
     @Test
@@ -32,6 +26,17 @@ class BankNoteBasketTest {
         assertEquals(0, bankNoteBasket.getBanknotes(51));
         assertEquals(50, bankNoteBasket.getBanknotes(50));
         assertEquals(0, bankNoteBasket.getBanknotes(1));
+    }
+
+    @Test
+    void addBanknotes() {
+        BankNoteBasket bankNoteBasket500 = new BankNoteBasketImpl(100, BanknotesNominalEnum.BANK_NOTE_NOMINAL_500);
+        bankNoteBasket500.addBanknotes(10);
+        assertEquals(110, bankNoteBasket500.getRemainBanknotes());
+        bankNoteBasket500.addBanknotes(0);
+        assertEquals(110, bankNoteBasket500.getRemainBanknotes());
+        bankNoteBasket500.addBanknotes(-12);
+        assertEquals(110, bankNoteBasket500.getRemainBanknotes());
     }
 
     @Test
@@ -51,20 +56,22 @@ class BankNoteBasketTest {
 
     @Test
     void getBasketCashInfo() {
-        assertEquals(bankNote, bankNoteBasket.getBasketBankNoteInfo());
-        assertEquals(bankNote.getBanknoteNominal(), bankNoteBasket.getBasketBankNoteInfo().getBanknoteNominal());
+        assertEquals(BanknotesNominalEnum.BANK_NOTE_NOMINAL_500, bankNoteBasket.getBasketBankNoteInfo());
+        assertEquals(BanknotesNominalEnum.BANK_NOTE_NOMINAL_500.getValue(), bankNoteBasket.getBasketBankNoteInfo().getValue());
     }
 
     @Test
     void getNominal() {
-        assertEquals(BanknotesNominalEnum.BANK_NOTE_NOMINAL_500.getValue().value(), bankNoteBasket.getNominal());
+        assertEquals(BanknotesNominalEnum.BANK_NOTE_NOMINAL_500.getValue(), bankNoteBasket.getNominal());
     }
 
     @Test
     void testNullConstructorArgument() {
         assertThrows(IllegalArgumentException.class, () -> new BankNoteBasketImpl(10, null));
-        assertThrows(IllegalArgumentException.class, () -> new BankNoteBasketImpl(0, bankNote));
-        assertThrows(IllegalArgumentException.class, () -> new BankNoteBasketImpl(-2, bankNote));
+        assertThrows(IllegalArgumentException.class, () -> new BankNoteBasketImpl(0, BanknotesNominalEnum.BANK_NOTE_NOMINAL_500));
+        assertThrows(IllegalArgumentException.class, () -> new BankNoteBasketImpl(-2, BanknotesNominalEnum.BANK_NOTE_NOMINAL_500));
 
     }
+
+
 }
