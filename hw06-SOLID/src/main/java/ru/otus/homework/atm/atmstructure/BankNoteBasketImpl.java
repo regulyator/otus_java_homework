@@ -1,18 +1,18 @@
 package ru.otus.homework.atm.atmstructure;
 
-import ru.otus.homework.atm.cash.BankNote;
+import ru.otus.homework.atm.cash.banknotemeta.BanknotesNominalEnum;
 
 import java.util.Objects;
 
 /**
  * корзина не дозагружается, т.е. нужно сразу запонять
  */
-public class BankNoteBasketImpl implements BankNoteBasket<BankNote> {
+public class BankNoteBasketImpl implements BankNoteBasket {
 
-    private final BankNote bankNote;
+    private final BanknotesNominalEnum bankNote;
     private int loadedBanknotes;
 
-    public BankNoteBasketImpl(int loadedBanknotes, BankNote bankNote) throws RuntimeException {
+    public BankNoteBasketImpl(int loadedBanknotes, BanknotesNominalEnum bankNote) throws RuntimeException {
         if (Objects.isNull(bankNote))
             throw new IllegalArgumentException("bankNote is null!");
         if (loadedBanknotes <= 0)
@@ -27,7 +27,12 @@ public class BankNoteBasketImpl implements BankNoteBasket<BankNote> {
     }
 
     @Override
-    public BankNote getBasketBankNoteInfo() {
+    public int addBanknotes(int banknotesToAdd) {
+        return this.putBanknotes(banknotesToAdd);
+    }
+
+    @Override
+    public BanknotesNominalEnum getBasketBankNoteInfo() {
         return this.bankNote;
     }
 
@@ -38,7 +43,7 @@ public class BankNoteBasketImpl implements BankNoteBasket<BankNote> {
 
     @Override
     public Integer getNominal() {
-        return this.bankNote.getBanknoteNominal();
+        return this.bankNote.getValue();
     }
 
     /**
@@ -53,6 +58,21 @@ public class BankNoteBasketImpl implements BankNoteBasket<BankNote> {
         } else {
             this.loadedBanknotes -= banknotesToIssue;
             return banknotesToIssue;
+        }
+    }
+
+    /**
+     * небольшая проверка что можем добавить
+     *
+     * @param banknotesToAdd сколько нужно добавить
+     * @return если проверку прошли - выдаем добавляем нужно, если нет, то ничего не добавляем
+     */
+    private int putBanknotes(int banknotesToAdd) {
+        if (banknotesToAdd <= 0) {
+            return 0;
+        } else {
+            loadedBanknotes += banknotesToAdd;
+            return banknotesToAdd;
         }
     }
 }

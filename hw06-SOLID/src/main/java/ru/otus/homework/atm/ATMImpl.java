@@ -1,7 +1,7 @@
 package ru.otus.homework.atm;
 
 import ru.otus.homework.atm.atmstructure.BankNoteDispenser;
-import ru.otus.homework.atm.cash.BankNote;
+import ru.otus.homework.atm.cash.banknotemeta.BanknotesNominalEnum;
 import ru.otus.homework.atm.exceptions.IncorrectSumOrNominalException;
 
 import java.util.List;
@@ -11,14 +11,14 @@ import java.util.stream.Collectors;
 
 public class ATMImpl implements ATM {
 
-    private final BankNoteDispenser<BankNote> bankNoteDispenser;
+    private final BankNoteDispenser bankNoteDispenser;
 
     /**
      * инициализация банкомата, без диспенсера выкидываем исключение
      *
      * @param bankNoteDispenser диспенсер
      */
-    public ATMImpl(BankNoteDispenser<BankNote> bankNoteDispenser) {
+    public ATMImpl(BankNoteDispenser bankNoteDispenser) {
         if (Objects.isNull(bankNoteDispenser))
             throw new IllegalArgumentException("bankNoteDispenser is null");
         this.bankNoteDispenser = bankNoteDispenser;
@@ -26,9 +26,15 @@ public class ATMImpl implements ATM {
     }
 
     @Override
-    public Map<BankNote, Integer> giveCash(int summToGive) throws IncorrectSumOrNominalException {
-        checkSummIsCorrect(summToGive);
-        return bankNoteDispenser.giveCash(summToGive);
+    public Map<BanknotesNominalEnum, Integer> giveCash(int sum) throws IncorrectSumOrNominalException {
+        checkSumIsCorrect(sum, false);
+        return bankNoteDispenser.giveCash(sum);
+    }
+
+    @Override
+    public Map<BanknotesNominalEnum, Integer> addCash(int sum) {
+        checkSumIsCorrect(sum, true);
+        return bankNoteDispenser.addCash(sum);
     }
 
     @Override
@@ -37,22 +43,31 @@ public class ATMImpl implements ATM {
         return bankNoteDispenser.getRemainCash()
                 .entrySet()
                 .stream()
-                .mapToInt(value -> value.getValue() * value.getKey().getBanknoteNominal()).sum();
+                .mapToInt(value -> value.getValue() * value.getKey().getValue()).sum();
     }
 
     /**
-     * проверяем на корректность введенную сумму если мы не можем ее выдать по причине что нет номиналов или сумма больше остатка - выкидываем исключение
+     * проверяем на корректность введенную сумму если мы не можем ее выдать или добавить - выкидываем исключение
      *
-     * @param sumToGive сумма
+     * @param sum      сумма
+     * @param isForAdd операция пополнения
      */
-    private void checkSummIsCorrect(int sumToGive) throws IncorrectSumOrNominalException {
+    private void checkSumIsCorrect(int sum, boolean isForAdd) throws IncorrectSumOrNominalException {
         Integer remainCash = getRemainCash();
-        List<BankNote> availableBanknotes = bankNoteDispenser.getCashNominals();
-        if ((sumToGive > getRemainCash())
-                || availableBanknotes.stream().noneMatch(bankNote -> (sumToGive % bankNote.getBanknoteNominal()) == 0)) {
-            throw new IncorrectSumOrNominalException("Запрошенная сумма больше остатка или не кратна доступным купюрам! Доступно для выдачи: " + remainCash
-                    + " Доступные купюры: " + availableBanknotes.stream().map(bankNote -> bankNote.getBanknoteNominal().toString()).collect(Collectors.joining(", ")));
+        List<BanknotesNominalEnum> availableBanknotes = bankNoteDispenser.getCashNominals();
+        if (isForAdd) {
+            if (availableBanknotes.stream().noneMatch(bankNote -> (sum % bankNote.getValue()) == 0)) {
+                throw new IncorrectSumOrNominalException("Введенная сумма не может быть внесена! "
+                        + "Доступные купюры для пополнения: " + availableBanknotes.stream().map(bankNote -> String.valueOf(bankNote.getValue())).collect(Collectors.joining(", ")));
+            }
+        } else {
+            if ((sum > getRemainCash())
+                    || availableBanknotes.stream().noneMatch(bankNote -> (sum % bankNote.getValue()) == 0)) {
+                throw new IncorrectSumOrNominalException("Запрошенная сумма больше остатка или не кратна доступным купюрам! Доступно для выдачи: " + remainCash
+                        + " Доступные купюры: " + availableBanknotes.stream().map(bankNote -> String.valueOf(bankNote.getValue())).collect(Collectors.joining(", ")));
+            }
         }
+
 
     }
 }
