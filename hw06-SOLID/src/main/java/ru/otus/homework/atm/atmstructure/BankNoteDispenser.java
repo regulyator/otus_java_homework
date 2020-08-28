@@ -1,32 +1,36 @@
 package ru.otus.homework.atm.atmstructure;
 
-import ru.otus.homework.atm.cash.BankNote;
+import ru.otus.homework.atm.cash.banknotemeta.BanknotesNominalEnum;
 
 import java.util.List;
 import java.util.Map;
 
 /**
  * диспенсер для выдачи денег
- *
- * @param <T>
  */
-public interface BankNoteDispenser<T extends BankNote> {
+public interface BankNoteDispenser {
 
     /**
      * @param cashToGive сколько выдать
      * @return выдает деньги
      */
-    Map<T, Integer> giveCash(int cashToGive);
+    Map<BanknotesNominalEnum, Integer> giveCash(int cashToGive);
+
+    /**
+     * @param sumToAdd сумма для добавлнения
+     * @return какого номинала и сколько добавили
+     */
+    Map<BanknotesNominalEnum, Integer> addCash(int sumToAdd);
 
     /**
      * @return доступные номиналы
      */
-    List<T> getCashNominals();
+    List<BanknotesNominalEnum> getCashNominals();
 
     /**
      * @return остаток
      */
-    Map<T, Integer> getRemainCash();
+    Map<BanknotesNominalEnum, Integer> getRemainCash();
 
     /**
      * меняет или если есть корзины с таким номиналом меняет какую то
@@ -34,5 +38,5 @@ public interface BankNoteDispenser<T extends BankNote> {
      * @param newBasket корзина для замены/вставки
      * @return если поменяли - то старую корзину, если добавили то новую
      */
-    BankNoteBasket<T> replaceOrAddBasket(BankNoteBasket<T> newBasket);
+    BankNoteBasket replaceOrAddBasket(BankNoteBasket newBasket);
 }

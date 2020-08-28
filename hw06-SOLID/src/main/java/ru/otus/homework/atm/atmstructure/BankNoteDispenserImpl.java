@@ -1,16 +1,17 @@
 package ru.otus.homework.atm.atmstructure;
 
-import ru.otus.homework.atm.cash.BankNote;
+
+import ru.otus.homework.atm.cash.banknotemeta.BanknotesNominalEnum;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-public class BankNoteDispenserImpl implements BankNoteDispenser<BankNote> {
+public class BankNoteDispenserImpl implements BankNoteDispenser {
 
-    private List<BankNoteBasket<BankNote>> bankNoteBaskets;
+    private List<BankNoteBasket> bankNoteBaskets;
 
-    public BankNoteDispenserImpl(List<BankNoteBasket<BankNote>> bankNoteBaskets) throws NullPointerException {
+    public BankNoteDispenserImpl(List<BankNoteBasket> bankNoteBaskets) throws NullPointerException {
         if (Objects.isNull(bankNoteBaskets))
             throw new IllegalArgumentException("bankNoteBaskets is null");
         this.bankNoteBaskets = Collections.unmodifiableList(bankNoteBaskets);
@@ -20,31 +21,51 @@ public class BankNoteDispenserImpl implements BankNoteDispenser<BankNote> {
         this.bankNoteBaskets = Collections.emptyList();
     }
 
+
     /**
-     * пытаемся отдать сумму, проходимся по всем корзинам от корзины
+     * @param cashToGive сколько выдать
+     * @return если не набрали - возвращаем пустую мапу,
+     * * если набрали то идем дальше и набираем мапу из корзин
+     */
+    @Override
+    public Map<BanknotesNominalEnum, Integer> giveCash(int cashToGive) {
+        return processBanknotesOperation(cashToGive, false);
+    }
+
+    /**
+     * @param sumToAdd сумма для добавлнения
+     * @return если не раскидать по корзинам - возвращаем пустую мапу и ничего не добавляем,
+     * * если набрали то идем дальше и набираем мапу из корзи
+     */
+    @Override
+    public Map<BanknotesNominalEnum, Integer> addCash(int sumToAdd) {
+        return processBanknotesOperation(sumToAdd, true);
+    }
+
+    /**
+     * пытаемся отдать или добавить сумму, проходимся по всем корзинам от корзины
      * с наибольшим номиналом
      *
-     * @param cashToGive сумма для выдачи
+     * @param cashToGive сумма для выдачи/добавления
      * @return если не набрали - возвращаем пустую мапу,
      * если набрали то идем дальше и набираем мапу из корзин
      */
-    @Override
-    public Map<BankNote, Integer> giveCash(int cashToGive) {
-        Map<BankNoteBasket<BankNote>, Integer> cashOutMap = new HashMap<>();
-        AtomicInteger remainGiveCash = new AtomicInteger(cashToGive);
+    private Map<BanknotesNominalEnum, Integer> processBanknotesOperation(int cashToGive, boolean isAddOperation) {
+        Map<BankNoteBasket, Integer> cashProcessMap = new HashMap<>();
+        AtomicInteger remainProcessCash = new AtomicInteger(cashToGive);
         bankNoteBaskets
                 .stream()
-                .sorted(Comparator.comparingInt(BankNoteBasket<BankNote>::getNominal).reversed())
+                .sorted(Comparator.comparingInt(BankNoteBasket::getNominal).reversed())
                 .forEach(cashBasket -> {
-                    int divideResult = remainGiveCash.get() / cashBasket.getNominal();
+                    int divideResult = remainProcessCash.get() / cashBasket.getNominal();
                     if (divideResult > 0 && divideResult <= cashBasket.getRemainBanknotes()) {
-                        cashOutMap.put(cashBasket, divideResult);
-                        remainGiveCash.set(remainGiveCash.get() - (divideResult * cashBasket.getNominal()));
+                        cashProcessMap.put(cashBasket, divideResult);
+                        remainProcessCash.set(remainProcessCash.get() - (divideResult * cashBasket.getNominal()));
                     }
                 });
 
-        if (remainGiveCash.get() == 0 && !cashOutMap.isEmpty()) {
-            return processCashOut(cashOutMap);
+        if (remainProcessCash.get() == 0 && !cashProcessMap.isEmpty()) {
+            return processCash(cashProcessMap, isAddOperation);
         }
         return new HashMap<>();
     }
@@ -55,7 +76,7 @@ public class BankNoteDispenserImpl implements BankNoteDispenser<BankNote> {
      * @return номиналы
      */
     @Override
-    public List<BankNote> getCashNominals() {
+    public List<BanknotesNominalEnum> getCashNominals() {
         return bankNoteBaskets.stream()
                 .filter(bankNoteCashBasket -> bankNoteCashBasket.getRemainBanknotes() > 0)
                 .map(BankNoteBasket::getBasketBankNoteInfo)
@@ -63,11 +84,10 @@ public class BankNoteDispenserImpl implements BankNoteDispenser<BankNote> {
     }
 
     /**
-     *
      * @return остаток
      */
     @Override
-    public Map<BankNote, Integer> getRemainCash() {
+    public Map<BanknotesNominalEnum, Integer> getRemainCash() {
         return countRemainCash();
     }
 
@@ -77,10 +97,16 @@ public class BankNoteDispenserImpl implements BankNoteDispenser<BankNote> {
      * @param cashOutMap карта списания
      * @return мапа с тем что списано
      */
-    private Map<BankNote, Integer> processCashOut(Map<BankNoteBasket<BankNote>, Integer> cashOutMap) {
+    private Map<BanknotesNominalEnum, Integer> processCash(Map<BankNoteBasket, Integer> cashOutMap, boolean isAddOperation) {
         return cashOutMap.keySet()
                 .stream()
-                .map(cashBasket -> dispenseFromCashBasket(cashBasket, cashOutMap.get(cashBasket)))
+                .peek(cashBasket -> {
+                    if (isAddOperation) {
+                        cashBasket.addBanknotes(cashOutMap.get(cashBasket));
+                    } else {
+                        cashBasket.getBanknotes(cashOutMap.get(cashBasket));
+                    }
+                })
                 .collect(Collectors.toMap(BankNoteBasket::getBasketBankNoteInfo, cashOutMap::get));
     }
 
@@ -91,7 +117,7 @@ public class BankNoteDispenserImpl implements BankNoteDispenser<BankNote> {
      * @return старую, если заменили, или новую корзину
      */
     @Override
-    public BankNoteBasket<BankNote> replaceOrAddBasket(BankNoteBasket<BankNote> newBasket) {
+    public BankNoteBasket replaceOrAddBasket(BankNoteBasket newBasket) {
         int basketIndexForReplace = -1;
         for (int bIndex = 0; bIndex < bankNoteBaskets.size(); bIndex++) {
             if (Objects.equals(bankNoteBaskets.get(bIndex).getBasketBankNoteInfo(), newBasket.getBasketBankNoteInfo())) {
@@ -109,25 +135,19 @@ public class BankNoteDispenserImpl implements BankNoteDispenser<BankNote> {
      * @param basketIndexForReplace место корзины
      * @return старую, если заменили, или новую корзину
      */
-    private BankNoteBasket<BankNote> modifyBasketList(BankNoteBasket<BankNote> newBasket, int basketIndexForReplace) {
+    private BankNoteBasket modifyBasketList(BankNoteBasket newBasket, int basketIndexForReplace) {
         if (basketIndexForReplace != -1) {
-            BankNoteBasket<BankNote> oldBasket = bankNoteBaskets.get(basketIndexForReplace);
-            List<BankNoteBasket<BankNote>> newBaskets = new ArrayList<>(bankNoteBaskets);
+            BankNoteBasket oldBasket = bankNoteBaskets.get(basketIndexForReplace);
+            List<BankNoteBasket> newBaskets = new ArrayList<>(bankNoteBaskets);
             newBaskets.set(basketIndexForReplace, newBasket);
             bankNoteBaskets = Collections.unmodifiableList(newBaskets);
             return oldBasket;
         } else {
-            List<BankNoteBasket<BankNote>> newBaskets = new ArrayList<>(bankNoteBaskets);
+            List<BankNoteBasket> newBaskets = new ArrayList<>(bankNoteBaskets);
             newBaskets.add(newBasket);
             bankNoteBaskets = Collections.unmodifiableList(newBaskets);
             return newBasket;
         }
-    }
-
-    // непосредственно списание из корзины
-    private BankNoteBasket<BankNote> dispenseFromCashBasket(BankNoteBasket<BankNote> bankNoteBasket, Integer banknotesToDispense) {
-        bankNoteBasket.getBanknotes(banknotesToDispense);
-        return bankNoteBasket;
     }
 
     /**
@@ -135,7 +155,7 @@ public class BankNoteDispenserImpl implements BankNoteDispenser<BankNote> {
      *
      * @return остаток
      */
-    private Map<BankNote, Integer> countRemainCash() {
+    private Map<BanknotesNominalEnum, Integer> countRemainCash() {
         return bankNoteBaskets.stream().collect(Collectors.toMap(BankNoteBasket::getBasketBankNoteInfo, BankNoteBasket::getRemainBanknotes));
     }
 }
