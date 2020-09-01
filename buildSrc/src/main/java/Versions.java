@@ -4,4 +4,5 @@ public interface Versions {
     String ronmamoReflections = "0.9.12";
     String jupiterTest = "5.6.2";
     String mockito = "3.3.3";
+    String asm = "8.0.1";
 }

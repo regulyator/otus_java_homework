@@ -29,8 +29,9 @@ allprojects {
             dependency("org.reflections:reflections:${Versions.ronmamoReflections}")
             dependency("org.junit.jupiter:junit-jupiter-api:${Versions.jupiterTest}")
             dependency("org.mockito:mockito-core:${Versions.mockito}")
-
-
+            dependency("org.mockito:mockito-junit-jupiter:${Versions.mockito}")
+            dependency("org.ow2.asm:asm:${Versions.asm}")
+            dependency("org.ow2.asm:asm-util:${Versions.asm}")
         }
     }
 }
