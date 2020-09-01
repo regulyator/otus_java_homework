@@ -6,3 +6,4 @@
 * **hw02-arrayDIY** - ДЗ Контейнеры и алгоритмы
 * **hw03-annotation** - ДЗ Аннотаци
 * **hw04-GC** - ДЗ GC
+* **hw06-SOLID** - ДЗ SOLID
