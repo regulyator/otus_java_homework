@@ -25,11 +25,13 @@ public class ComplexProcessor implements Handler {
         for (Processor pros : processors) {
             try {
                 newMsg = pros.process(newMsg);
+
             } catch (Exception ex) {
                 errorHandler.accept(ex);
             }
+            //занес метод оповещения листеноров сюда чтобы была наглядна работа истории
+            notify(msg, newMsg);
         }
-        notify(msg, newMsg);
         return newMsg;
     }
 
