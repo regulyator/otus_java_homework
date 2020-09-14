@@ -30,7 +30,7 @@ public class MessageStorageStack implements MessageStorage {
      */
     @Override
     public MessageSnapshot getLastSavedSnapshot() {
-        return messageSnapshots.pop();
+        return messageSnapshots.peek();
     }
 
     /**

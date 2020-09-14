@@ -7,6 +7,7 @@ import ru.otus.processor.ProcessorExceptionGenerator;
 import ru.otus.processor.ProcessorFieldSwapper;
 import ru.otus.processor.ProcessorUpperField10;
 import ru.otus.util.MessageStorageStack;
+import ru.otus.util.TimeProviderSystemImpl;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -27,7 +28,7 @@ public class HomeWork {
     public static void main(String[] args) {
 
         var processors = List.of(new ProcessorFieldSwapper(),
-                new ProcessorExceptionGenerator(() -> LocalTime.now().getSecond()),
+                new ProcessorExceptionGenerator(new TimeProviderSystemImpl()),
                 new ProcessorConcatFields(),
                 new ProcessorUpperField10());
 

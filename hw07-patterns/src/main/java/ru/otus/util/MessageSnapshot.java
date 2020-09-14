@@ -8,8 +8,8 @@ public class MessageSnapshot {
 
 
     public MessageSnapshot(Message oldMessage, Message newMessage) {
-        this.oldMessage = oldMessage;
-        this.newMessage = newMessage;
+        this.oldMessage = oldMessage.toBuilder().build();
+        this.newMessage = newMessage.toBuilder().build();
     }
 
     public Message getOldMessage() {

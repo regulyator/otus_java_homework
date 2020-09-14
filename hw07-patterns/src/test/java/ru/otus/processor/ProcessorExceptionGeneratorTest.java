@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ru.otus.util.TimeProvider;
 
 import java.util.function.Supplier;
 
@@ -14,19 +15,19 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ProcessorExceptionGeneratorTest {
     @Mock
-    Supplier<Integer> systemSecondSupplier;
+    TimeProvider timeProvider;
 
     @Test
     void testGenException() {
-        when(systemSecondSupplier.get()).then(invocation -> 2);
-        Processor processor = new ProcessorExceptionGenerator(systemSecondSupplier);
+        when(timeProvider.getSystemSeconds()).then(invocation -> 2);
+        Processor processor = new ProcessorExceptionGenerator(timeProvider);
         assertThrows(RuntimeException.class, () -> processor.process(null));
     }
 
     @Test
     void testNoGenException() {
-        when(systemSecondSupplier.get()).then(invocation -> 3);
-        Processor processor = new ProcessorExceptionGenerator(systemSecondSupplier);
+        when(timeProvider.getSystemSeconds()).then(invocation -> 3);
+        Processor processor = new ProcessorExceptionGenerator(timeProvider);
         assertDoesNotThrow(() -> processor.process(null));
 
     }
