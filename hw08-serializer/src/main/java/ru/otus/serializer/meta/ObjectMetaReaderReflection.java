@@ -19,7 +19,7 @@ public class ObjectMetaReaderReflection implements ObjectMetaReader {
             List<FieldMeta> result = new ArrayList<>(fields.size());
             for (Field field : fields) {
                 field.setAccessible(true);
-                result.add(new FieldMeta(field.getName(), field.get(object)));
+                result.add(new FieldMeta(field.getName(), field.get(object), field.getType()));
             }
 
             return result;

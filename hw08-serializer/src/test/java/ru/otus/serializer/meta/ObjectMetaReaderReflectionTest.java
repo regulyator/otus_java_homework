@@ -14,7 +14,7 @@ class ObjectMetaReaderReflectionTest {
 
     @Test
     void readObjectMeta() {
-        SampleObject sampleObject = new SampleObject(10, 20, "text");
+        SampleObject sampleObject = new SampleObject(10, 20, "text", someCollection);
         ObjectMetaReader objectMetaReader = new ObjectMetaReaderReflection();
         List<? extends FieldMeta> result = objectMetaReader.readObjectMeta(sampleObject);
 
