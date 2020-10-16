@@ -20,7 +20,7 @@ public class HomeWork {
                 true,
                 20,
                 "string",
-                strings);
+                strings, null);
         String json = gson.toJson(sampleObject);
         System.out.println(json);
     }

@@ -20,7 +20,7 @@ public class DefaultTypeConverterProvider implements TypeConverterProvider {
             case PRIMITIVE -> new PrimitiveToJsonConverter();
             case ARRAY -> new ArrayToJsonConverter(this);
             case COLLECTION -> new CollectionToJsonConverter(this);
-            case OBJECT -> new ObjectToJsonConverter(this);
+            case OBJECT -> new ObjectToJsonConverter(this, MyGsonFactory.getDefaultMyGsonConverter());
             case STRING -> new StringToJsonConverter();
 
         };

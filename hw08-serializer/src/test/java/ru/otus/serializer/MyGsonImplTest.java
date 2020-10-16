@@ -14,6 +14,16 @@ class MyGsonImplTest {
         char[] chars = {'c', 'h', 'a', 'r'};
         Collection<String> strings = Arrays.asList("txt1", "txt2", "txt3");
 
+        SampleObject sampleObject1 = new SampleObject(10,
+                (byte) 2,
+                'c',
+                false,
+                chars,
+                true,
+                20,
+                "string",
+                strings, null);
+
         SampleObject sampleObject = new SampleObject(10,
                 (byte) 2,
                 'c',
@@ -22,7 +32,7 @@ class MyGsonImplTest {
                 true,
                 20,
                 "string",
-                strings);
+                strings, sampleObject1);
         MyGson myGson = MyGsonFactory.getDefaultMyGsonConverter();
 
         System.out.println(myGson.toJson(sampleObject));

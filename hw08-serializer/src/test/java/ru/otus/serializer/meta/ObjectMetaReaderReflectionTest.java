@@ -26,7 +26,7 @@ class ObjectMetaReaderReflectionTest {
                 true,
                 20,
                 "string",
-                strings);
+                strings, null);
         ObjectMetaReader objectMetaReader = new ObjectMetaReaderReflection();
         List<? extends FieldMeta> result = objectMetaReader.readObjectMeta(sampleObject);
 

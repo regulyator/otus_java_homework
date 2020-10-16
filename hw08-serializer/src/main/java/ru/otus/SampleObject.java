@@ -22,16 +22,10 @@ public class SampleObject {
 
     private final Collection someCollection;
 
+    private final Object someObject;
 
-    public SampleObject(int someIntField,
-                        byte someByteField,
-                        char someCharField,
-                        boolean someBooleanPrimitiveField,
-                        char[] someCharArrayField,
-                        Boolean someBooleanField,
-                        Integer someIntegerField,
-                        String someStringField,
-                        Collection someCollection) {
+
+    public SampleObject(int someIntField, byte someByteField, char someCharField, boolean someBooleanPrimitiveField, char[] someCharArrayField, Boolean someBooleanField, Integer someIntegerField, String someStringField, Collection someCollection, Object someObject) {
         this.someIntField = someIntField;
         this.someByteField = someByteField;
         this.someCharField = someCharField;
@@ -41,6 +35,7 @@ public class SampleObject {
         this.someIntegerField = someIntegerField;
         this.someStringField = someStringField;
         this.someCollection = someCollection;
+        this.someObject = someObject;
     }
 
     public int getSomeIntField() {
@@ -77,5 +72,9 @@ public class SampleObject {
 
     public Collection getSomeCollection() {
         return someCollection;
+    }
+
+    public Object getSomeObject() {
+        return someObject;
     }
 }

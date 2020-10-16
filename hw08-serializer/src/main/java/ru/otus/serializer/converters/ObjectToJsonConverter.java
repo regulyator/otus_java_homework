@@ -1,18 +1,24 @@
 package ru.otus.serializer.converters;
 
+import ru.otus.serializer.MyGson;
 import ru.otus.serializer.factorys.TypeConverterProvider;
+
+import java.util.Objects;
 
 public class ObjectToJsonConverter implements ToJsonConverter {
 
     private final TypeConverterProvider valueConverterProcessor;
 
-    public ObjectToJsonConverter(TypeConverterProvider valueConverterProcessor) {
+    private final MyGson myGson;
+
+    public ObjectToJsonConverter(TypeConverterProvider valueConverterProcessor, MyGson myGson) {
         this.valueConverterProcessor = valueConverterProcessor;
+        this.myGson = myGson;
     }
 
     @Override
     public String toJson(Object object) {
-        return null;
+        return Objects.isNull(object) ? "null":myGson.toJson(object);
     }
 
 }
