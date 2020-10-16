@@ -4,10 +4,11 @@ import ru.otus.serializer.exception.ReadFieldException;
 
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class ObjectMetaReaderReflection implements ObjectMetaReader {
+
+
     @Override
     public List<? extends FieldMeta> readObjectMeta(Object object) {
         if (Objects.isNull(object)) {
@@ -34,7 +35,6 @@ public class ObjectMetaReaderReflection implements ObjectMetaReader {
             return Collections.emptyList();
         }
         return Arrays.stream(aClass.getDeclaredFields())
-                .filter(Predicate.not(Field::isSynthetic))
                 .collect(Collectors.toUnmodifiableList());
 
     }

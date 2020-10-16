@@ -2,13 +2,29 @@ package ru.otus.serializer;
 
 import org.junit.jupiter.api.Test;
 import ru.otus.SampleObject;
+import ru.otus.serializer.factorys.MyGsonFactory;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 class MyGsonImplTest {
 
     @Test
     void toJson() {
-        SampleObject sampleObject = new SampleObject(10, 20, "text", someCollection);
+        char[] chars = {'c', 'h', 'a', 'r'};
+        Collection<String> strings = Arrays.asList("txt1", "txt2", "txt3");
+
+        SampleObject sampleObject = new SampleObject(10,
+                (byte) 2,
+                'c',
+                false,
+                chars,
+                true,
+                20,
+                "string",
+                strings);
         MyGson myGson = MyGsonFactory.getDefaultMyGsonConverter();
+
         System.out.println(myGson.toJson(sampleObject));
     }
 }

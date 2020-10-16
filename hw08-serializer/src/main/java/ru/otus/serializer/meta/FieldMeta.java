@@ -4,7 +4,7 @@ public class FieldMeta {
 
     private final String fieldName;
     private final Object fieldValue;
-    private final Object fieldType;
+    private final Class<?> fieldType;
 
 
     public FieldMeta(String fieldName, Object fieldValue, Class<?> fieldType) {
@@ -21,7 +21,7 @@ public class FieldMeta {
         return fieldValue;
     }
 
-    public Object getFieldType() {
+    public Class<?> getFieldType() {
         return fieldType;
     }
 }

@@ -1,5 +1,6 @@
 package ru.otus.serializer;
 
+import ru.otus.serializer.converters.ValueConverterProcessor;
 import ru.otus.serializer.meta.FieldMeta;
 import ru.otus.serializer.meta.ObjectMetaReader;
 
@@ -9,9 +10,11 @@ import java.util.stream.Collectors;
 public class MyGsonImpl implements MyGson {
 
     private final ObjectMetaReader objectMetaReader;
+    private final ValueConverterProcessor valueConverterProcessor;
 
-    public MyGsonImpl(ObjectMetaReader objectMetaReader) {
+    public MyGsonImpl(ObjectMetaReader objectMetaReader, ValueConverterProcessor valueConverterProcessor) {
         this.objectMetaReader = objectMetaReader;
+        this.valueConverterProcessor = valueConverterProcessor;
     }
 
     @Override
@@ -21,6 +24,6 @@ public class MyGsonImpl implements MyGson {
     }
 
     private String processField(FieldMeta fieldMeta) {
-        return "\"" + fieldMeta.getFieldName() + "\"" + ":" + fieldMeta.getFieldValue();
+        return "\"" + fieldMeta.getFieldName() + "\"" + ":" + valueConverterProcessor.processValue(fieldMeta);
     }
 }
