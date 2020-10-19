@@ -6,6 +6,9 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * для получение информации по полям класса
+ */
 public class ObjectMetaReaderReflection implements ObjectMetaReader {
 
 

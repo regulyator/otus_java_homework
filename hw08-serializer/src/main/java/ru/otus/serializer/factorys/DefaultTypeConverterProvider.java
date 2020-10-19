@@ -6,13 +6,21 @@ import ru.otus.serializer.meta.Type;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * маппинг типов и их конвертеров
+ */
 public class DefaultTypeConverterProvider implements TypeConverterProvider {
 
     private final Map<Type, ToJsonConverter> typeConvertersProvider = new HashMap<>(Type.values().length);
+    private final TypeResolver typeResolver;
+
+    public DefaultTypeConverterProvider(TypeResolver typeResolver) {
+        this.typeResolver = typeResolver;
+    }
 
     @Override
     public ToJsonConverter getConverter(Class<?> aClass) {
-        return typeConvertersProvider.computeIfAbsent(TypeResolver.resolveType(aClass), this::createConverter);
+        return typeConvertersProvider.computeIfAbsent(typeResolver.resolveType(aClass), this::createConverter);
     }
 
     private ToJsonConverter createConverter(Type type) {
@@ -22,7 +30,6 @@ public class DefaultTypeConverterProvider implements TypeConverterProvider {
             case COLLECTION -> new CollectionToJsonConverter(this);
             case OBJECT -> new ObjectToJsonConverter(this, MyGsonFactory.getDefaultMyGsonConverter());
             case STRING -> new StringToJsonConverter();
-
         };
     }
 }

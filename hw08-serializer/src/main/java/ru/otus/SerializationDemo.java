@@ -1,19 +1,15 @@
-package ru.otus.serializer;
+package ru.otus;
 
 import com.google.gson.Gson;
-import org.junit.jupiter.api.Test;
-import ru.otus.SampleObject;
+import ru.otus.serializer.MyGson;
 import ru.otus.serializer.factorys.MyGsonFactory;
 
 import java.util.Arrays;
 import java.util.Collection;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+public class SerializationDemo {
 
-class MyGsonImplTest {
-
-    @Test
-    void toJson() {
+    public static void main(String[] args) {
         char[] chars = {'c', 'h', 'a', 'r'};
         Collection<String> strings = Arrays.asList("txt1", "txt2", "txt3");
 
@@ -36,14 +32,13 @@ class MyGsonImplTest {
                 20,
                 "string",
                 strings, sampleObjectInner);
-
         MyGson myGson = MyGsonFactory.getDefaultMyGsonConverter();
-        String json = myGson.toJson(sampleObject);
 
+        String json = myGson.toJson(sampleObject);
+        System.out.println(json);
 
         Gson gson = new Gson();
         SampleObject sampleObjectFrom = gson.fromJson(json, SampleObject.class);
-
-        assertEquals(sampleObjectFrom, sampleObject);
+        System.out.println(sampleObjectFrom);
     }
 }

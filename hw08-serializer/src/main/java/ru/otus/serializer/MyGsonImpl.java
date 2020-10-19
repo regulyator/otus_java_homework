@@ -24,6 +24,6 @@ public class MyGsonImpl implements MyGson {
     }
 
     private String processField(FieldMeta fieldMeta) {
-        return "\"" + fieldMeta.getFieldName() + "\"" + ":" + valueConverterProcessor.processValue(fieldMeta);
+        return String.format("%s%s%s:%s", QUOTES, fieldMeta.getFieldName(), QUOTES, valueConverterProcessor.processValue(fieldMeta));
     }
 }

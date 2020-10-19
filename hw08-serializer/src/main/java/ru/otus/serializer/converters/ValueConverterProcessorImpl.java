@@ -6,6 +6,9 @@ import ru.otus.serializer.meta.FieldMeta;
 
 import java.util.Objects;
 
+/**
+ * обработчик полей
+ */
 public class ValueConverterProcessorImpl implements ValueConverterProcessor {
 
     private final TypeConverterProvider typeConvertersProvider;

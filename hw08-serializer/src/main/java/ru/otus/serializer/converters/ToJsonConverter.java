@@ -7,4 +7,5 @@ public interface ToJsonConverter {
     String ARRAY_END_ELEMENT = "]";
 
     String toJson(Object object);
+
 }

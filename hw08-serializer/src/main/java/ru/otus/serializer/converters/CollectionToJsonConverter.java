@@ -6,6 +6,9 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * конвертер для коллекций
+ */
 public class CollectionToJsonConverter implements ToJsonConverter {
 
     private final TypeConverterProvider valueConverterProcessor;

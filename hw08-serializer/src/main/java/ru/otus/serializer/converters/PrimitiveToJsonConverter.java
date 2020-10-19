@@ -2,6 +2,9 @@ package ru.otus.serializer.converters;
 
 import java.util.Objects;
 
+/**
+ * конвертер примитивов и их враперов
+ */
 public class PrimitiveToJsonConverter implements ToJsonConverter {
 
     @Override

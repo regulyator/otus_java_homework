@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * Конвертер массивов примитивных типов
+ */
 public class ArrayToJsonConverter implements ToJsonConverter {
 
     private final TypeConverterProvider valueConverterProcessor;
@@ -33,7 +36,6 @@ public class ArrayToJsonConverter implements ToJsonConverter {
         final List<Object> resultList = new ArrayList<>();
         for (int i = 0; i < Array.getLength(objectArray); i++)
             resultList.add(Array.get(objectArray, i));
-
         return resultList;
     }
 }

@@ -1,6 +1,8 @@
 package ru.otus;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 
 public class SampleObject {
 
@@ -20,12 +22,12 @@ public class SampleObject {
 
     private final String someStringField;
 
-    private final Collection someCollection;
+    private final Collection<?> someCollection;
 
-    private final Object someObject;
+    private final SampleObject someObject;
 
 
-    public SampleObject(int someIntField, byte someByteField, char someCharField, boolean someBooleanPrimitiveField, char[] someCharArrayField, Boolean someBooleanField, Integer someIntegerField, String someStringField, Collection someCollection, Object someObject) {
+    public SampleObject(int someIntField, byte someByteField, char someCharField, boolean someBooleanPrimitiveField, char[] someCharArrayField, Boolean someBooleanField, Integer someIntegerField, String someStringField, Collection<?> someCollection, SampleObject someObject) {
         this.someIntField = someIntField;
         this.someByteField = someByteField;
         this.someCharField = someCharField;
@@ -70,11 +72,35 @@ public class SampleObject {
         return someStringField;
     }
 
-    public Collection getSomeCollection() {
+    public Collection<?> getSomeCollection() {
         return someCollection;
     }
 
-    public Object getSomeObject() {
+    public SampleObject getSomeObject() {
         return someObject;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SampleObject that = (SampleObject) o;
+        return someIntField == that.someIntField &&
+                someByteField == that.someByteField &&
+                someCharField == that.someCharField &&
+                someBooleanPrimitiveField == that.someBooleanPrimitiveField &&
+                Arrays.equals(someCharArrayField, that.someCharArrayField) &&
+                Objects.equals(someBooleanField, that.someBooleanField) &&
+                Objects.equals(someIntegerField, that.someIntegerField) &&
+                Objects.equals(someStringField, that.someStringField) &&
+                Objects.equals(someCollection, that.someCollection) &&
+                Objects.equals(someObject, that.someObject);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(someIntField, someByteField, someCharField, someBooleanPrimitiveField, someBooleanField, someIntegerField, someStringField, someCollection, someObject);
+        result = 31 * result + Arrays.hashCode(someCharArrayField);
+        return result;
     }
 }
