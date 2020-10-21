@@ -39,6 +39,7 @@ public class SerializationDemo {
 
         Gson gson = new Gson();
         SampleObject sampleObjectFrom = gson.fromJson(json, SampleObject.class);
+        System.out.println(myGson.toJson(null));
         System.out.println(sampleObjectFrom);
     }
 }
