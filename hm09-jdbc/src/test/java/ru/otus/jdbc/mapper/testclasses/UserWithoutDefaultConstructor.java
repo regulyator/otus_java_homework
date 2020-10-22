@@ -1,4 +1,4 @@
-package ru.otus.core.model;
+package ru.otus.jdbc.mapper.testclasses;
 
 import ru.otus.core.annotations.Column;
 import ru.otus.core.annotations.Id;
@@ -7,7 +7,7 @@ import ru.otus.core.annotations.Table;
 import java.util.Objects;
 
 @Table
-public class User {
+public class UserWithoutDefaultConstructor {
 
     @Id
     private long id;
@@ -16,10 +16,7 @@ public class User {
     @Column
     private int age;
 
-    public User() {
-    }
-
-    public User(long id, String name, int age) {
+    public UserWithoutDefaultConstructor(long id, String name, int age) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -62,7 +59,7 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
+        UserWithoutDefaultConstructor user = (UserWithoutDefaultConstructor) o;
         return id == user.id;
     }
 

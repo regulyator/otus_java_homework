@@ -8,7 +8,6 @@ import ru.otus.core.model.User;
 import ru.otus.core.service.DbServiceUserImpl;
 import ru.otus.h2.DataSourceH2;
 import ru.otus.jdbc.DbExecutorImpl;
-import ru.otus.jdbc.dao.UserDaoJdbc;
 import ru.otus.jdbc.mapper.JdbcMapper;
 import ru.otus.jdbc.sessionmanager.SessionManagerJdbc;
 
@@ -32,13 +31,13 @@ public class HomeWork {
 
 // Код дальше должен остаться, т.е. userDao должен использоваться
         var dbServiceUser = new DbServiceUserImpl(userDao);
-        var id = dbServiceUser.saveUser(new User(0, "dbServiceUser"));
+        /*var id = dbServiceUser.saveUser(new User(0, "dbServiceUser"));
         Optional<User> user = dbServiceUser.getUser(id);
 
         user.ifPresentOrElse(
                 crUser -> logger.info("created user, name:{}", crUser.getName()),
                 () -> logger.info("user was not created")
-        );
+        );*/
 // Работа со счетом
 
 
