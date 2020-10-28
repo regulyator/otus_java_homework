@@ -1,6 +1,5 @@
 package ru.otus.jdbc.mapper;
 
-import java.lang.reflect.Field;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -50,11 +49,11 @@ public class EntitySQLMetaDataDefaultImpl<T> implements EntitySQLMetaData {
     }
 
     private String generateFieldsToString() {
-        return entityClassMetaData.getAllFields().stream().map(field -> field.getName().toLowerCase()).collect(Collectors.joining(","));
+        return entityClassMetaData.getFieldsWithoutId().stream().map(field -> field.getName().toLowerCase()).collect(Collectors.joining(","));
     }
 
     private String generateValuesTemplate() {
-        return entityClassMetaData.getAllFields().stream().map(field -> "?").collect(Collectors.joining(","));
+        return entityClassMetaData.getFieldsWithoutId().stream().map(field -> "?").collect(Collectors.joining(","));
     }
 
     private String generateFieldsValueParTemplate() {
