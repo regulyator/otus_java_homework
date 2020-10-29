@@ -21,14 +21,17 @@ public class JdbcMapperDefaultImpl<T> implements JdbcMapper<T> {
 
     private final EntityClassMetaData<T> metaData;
 
+    private final ReflectionUtils reflectionUtils;
+
     public JdbcMapperDefaultImpl(SessionManagerJdbc sessionManager,
                                  DbExecutor<T> executor,
                                  EntitySQLMetaData sqlMetaData,
-                                 EntityClassMetaData<T> metaData) {
+                                 EntityClassMetaData<T> metaData, ReflectionUtils reflectionUtils) {
         this.sessionManager = sessionManager;
         this.executor = executor;
         this.sqlMetaData = sqlMetaData;
         this.metaData = metaData;
+        this.reflectionUtils = reflectionUtils;
     }
 
 
@@ -79,7 +82,7 @@ public class JdbcMapperDefaultImpl<T> implements JdbcMapper<T> {
         try {
             T entity = metaData.getConstructor().newInstance();
             for (Field field : metaData.getAllFields()) {
-                ReflectionUtils.setField(entity, field, resultSet.getObject(field.getName()));
+                reflectionUtils.setField(entity, field, resultSet.getObject(field.getName()));
             }
             return entity;
         } catch (Exception ex) {
@@ -93,19 +96,19 @@ public class JdbcMapperDefaultImpl<T> implements JdbcMapper<T> {
 
     private void setIdField(Object generatedId, T objectData) {
         try {
-            ReflectionUtils.setField(objectData, metaData.getIdField(), generatedId);
+            reflectionUtils.setField(objectData, metaData.getIdField(), generatedId);
         } catch (IllegalAccessException ex) {
             throw new SetIdFieldException("Error when set entity id field value!", ex);
         }
     }
 
     private boolean idFieldIsNull(T objectData) {
-        return ReflectionUtils.checkFieldIsNull(objectData, metaData.getIdField());
+        return reflectionUtils.checkFieldIsNull(objectData, metaData.getIdField());
     }
 
     private List<Object> retrieveUpdateParams(T objectData) {
         try {
-            return ReflectionUtils.getObjectFieldValues(objectData, metaData.getAllFields());
+            return reflectionUtils.getObjectFieldValues(objectData, metaData.getAllFields());
         } catch (IllegalAccessException ex) {
             throw new RetrieveObjectFieldsValuesException("Error when get entity fields values!", ex);
         }
@@ -113,7 +116,7 @@ public class JdbcMapperDefaultImpl<T> implements JdbcMapper<T> {
 
     private List<Object> retrieveInsertParams(T objectData) {
         try {
-            return ReflectionUtils.getObjectFieldValues(objectData, metaData.getFieldsWithoutId());
+            return reflectionUtils.getObjectFieldValues(objectData, metaData.getFieldsWithoutId());
         } catch (IllegalAccessException ex) {
             throw new RetrieveObjectFieldsValuesException("Error when get entity fields values!", ex);
         }

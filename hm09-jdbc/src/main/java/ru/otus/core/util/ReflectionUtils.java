@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class ReflectionUtils {
 
-    public static List<Object> getObjectFieldValues(Object o, List<Field> fields) throws IllegalAccessException {
+    public List<Object> getObjectFieldValues(Object o, List<Field> fields) throws IllegalAccessException {
         List<Object> result = new ArrayList<>(fields.size());
         for (Field field : fields) {
             field.setAccessible(true);
@@ -16,12 +16,12 @@ public class ReflectionUtils {
         return result;
     }
 
-    public static void setField(Object o, Field field, Object value) throws IllegalAccessException {
+    public void setField(Object o, Field field, Object value) throws IllegalAccessException {
         field.setAccessible(true);
         field.set(o, value);
     }
 
-    public static boolean checkFieldIsNull(Object o, Field field) {
+    public boolean checkFieldIsNull(Object o, Field field) {
         try {
             field.setAccessible(true);
             return Objects.isNull(field.get(o));

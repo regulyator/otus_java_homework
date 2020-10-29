@@ -21,8 +21,8 @@ import javax.sql.DataSource;
 import java.util.Optional;
 
 
-public class HomeWork {
-    private static final Logger logger = LoggerFactory.getLogger(HomeWork.class);
+public class JdbcHomeWork {
+    private static final Logger logger = LoggerFactory.getLogger(JdbcHomeWork.class);
 
     public static void main(String[] args) {
         // Общая часть
@@ -37,7 +37,7 @@ public class HomeWork {
         UserDao userDao = new UserDaoImpl(jdbcMapperUser);
 
         var dbServiceUser = new DbServiceUser(userDao);
-        var idUser = dbServiceUser.save(new User(0, "dbServiceUser", 22));
+        var idUser = dbServiceUser.save(new User(1, "dbServiceUser", 22));
         Optional<User> user = dbServiceUser.get(idUser);
 
         user.ifPresentOrElse(

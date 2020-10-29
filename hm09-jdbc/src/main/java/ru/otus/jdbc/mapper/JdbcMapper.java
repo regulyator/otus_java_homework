@@ -4,6 +4,7 @@ import ru.otus.jdbc.sessionmanager.SessionManagerJdbc;
 
 /**
  * Сохратяет объект в базу, читает объект из базы
+ *
  * @param <T>
  */
 public interface JdbcMapper<T> {

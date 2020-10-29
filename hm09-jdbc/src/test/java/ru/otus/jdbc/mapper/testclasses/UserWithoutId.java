@@ -1,7 +1,6 @@
 package ru.otus.jdbc.mapper.testclasses;
 
 import ru.otus.core.annotations.Column;
-import ru.otus.core.annotations.Id;
 import ru.otus.core.annotations.Table;
 
 import java.util.Objects;

@@ -36,7 +36,7 @@ public class DbExecutorImpl<T> implements DbExecutor<T> {
         try (var pst = connection.prepareStatement(sql)) {
             pst.setObject(1, id);
             try (var rs = pst.executeQuery()) {
-                return Optional.ofNullable(rsHandler.apply(rs));
+                return rs.next() ? Optional.ofNullable(rsHandler.apply(rs)) : Optional.empty(); // тут дергаем next() чтобы не делать это в хэндлере
             }
         }
     }
