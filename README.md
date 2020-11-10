@@ -8,3 +8,5 @@
 * **hw04-GC** - ДЗ GC
 * **hw06-SOLID** - ДЗ SOLID
 * **hw07-patterns** - ДЗ паттерны
+* **hw08-serializer** - ДЗ сериализатор
+* **hw09-овис** - ДЗ JDBC
