@@ -1,6 +1,6 @@
 package ru.otus.core.exceptions;
 
-public class SelectException extends RuntimeException {
+public class SelectException extends CoreException {
 
     public SelectException(String message) {
         super(message);

@@ -1,6 +1,6 @@
 package ru.otus.core.exceptions;
 
-public class GetEntityClassMetaDataException extends RuntimeException {
+public class GetEntityClassMetaDataException extends CoreException {
 
     public GetEntityClassMetaDataException(String message) {
         super(message);

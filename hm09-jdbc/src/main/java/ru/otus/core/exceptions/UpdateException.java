@@ -1,6 +1,6 @@
 package ru.otus.core.exceptions;
 
-public class UpdateException extends RuntimeException {
+public class UpdateException extends CoreException {
 
     public UpdateException(String message) {
         super(message);

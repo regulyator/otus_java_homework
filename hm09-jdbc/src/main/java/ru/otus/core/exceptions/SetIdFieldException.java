@@ -1,6 +1,6 @@
 package ru.otus.core.exceptions;
 
-public class SetIdFieldException extends RuntimeException {
+public class SetIdFieldException extends CoreException {
 
     public SetIdFieldException(String message) {
         super(message);

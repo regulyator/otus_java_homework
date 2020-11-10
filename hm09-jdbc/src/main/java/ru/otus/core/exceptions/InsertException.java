@@ -1,6 +1,6 @@
 package ru.otus.core.exceptions;
 
-public class InsertException extends RuntimeException {
+public class InsertException extends CoreException {
 
     public InsertException(String message) {
         super(message);
