@@ -21,8 +21,8 @@ import javax.sql.DataSource;
 import java.util.Optional;
 
 
-public class JdbcHomeWork {
-    private static final Logger logger = LoggerFactory.getLogger(JdbcHomeWork.class);
+public class JpqlHomeWork {
+    private static final Logger logger = LoggerFactory.getLogger(JpqlHomeWork.class);
 
     public static void main(String[] args) {
         // Общая часть
