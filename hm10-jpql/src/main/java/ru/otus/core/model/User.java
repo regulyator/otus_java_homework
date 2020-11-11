@@ -1,28 +1,40 @@
 package ru.otus.core.model;
 
-import ru.otus.core.annotations.Column;
-import ru.otus.core.annotations.Id;
-import ru.otus.core.annotations.Table;
 
-import java.util.Objects;
+import javax.persistence.*;
+import java.util.List;
 
-@Table
+@Entity
+@Table(name = "user")
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
-    @Column
+
+    @Column(name = "name")
     private String name;
-    @Column
-    private int age;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private AddressDataSet addressDataSet;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<PhoneDataSet> phoneDataSet;
 
     public User() {
     }
 
-    public User(long id, String name, int age) {
+    public User(long id, String name, AddressDataSet addressDataSet, List<PhoneDataSet> phoneDataSet) {
         this.id = id;
         this.name = name;
-        this.age = age;
+        this.addressDataSet = addressDataSet;
+        this.phoneDataSet = phoneDataSet;
+        updatePhonesUserParent(this.phoneDataSet);
+    }
+
+    public User(String name, AddressDataSet addressDataSet, List<PhoneDataSet> phoneDataSet) {
+        this(0, name, addressDataSet, phoneDataSet);
     }
 
     public long getId() {
@@ -41,12 +53,25 @@ public class User {
         this.name = name;
     }
 
-    public int getAge() {
-        return age;
+    public AddressDataSet getAddressDataSet() {
+        return addressDataSet;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setAddressDataSet(AddressDataSet addressDataSet) {
+        this.addressDataSet = addressDataSet;
+    }
+
+    public List<PhoneDataSet> getPhoneDataSet() {
+        return phoneDataSet;
+    }
+
+    public void setPhoneDataSet(List<PhoneDataSet> phoneDataSet) {
+        this.phoneDataSet = phoneDataSet;
+        updatePhonesUserParent(this.phoneDataSet);
+    }
+
+    protected void updatePhonesUserParent(List<PhoneDataSet> phoneDataSet) {
+        phoneDataSet.forEach(x -> x.setUser(this));
     }
 
     @Override
@@ -54,20 +79,8 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", age=" + age +
+                ", addressDataSet=" + addressDataSet +
+                ", phoneDataSet=" + phoneDataSet +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return id == user.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }

@@ -9,15 +9,8 @@ targetCompatibility = JavaVersion.VERSION_14
 dependencies {
     implementation 'com.h2database:h2'
     implementation 'ch.qos.logback:logback-classic'
-    implementation 'org.flywaydb:flyway-core'
     implementation 'org.hibernate:hibernate-core'
     implementation 'com.zaxxer:HikariCP'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api'
-    testImplementation 'org.assertj:assertj-core'
-    testImplementation 'org.mockito:mockito-core'
-    testImplementation 'org.mockito:mockito-junit-jupiter'
-
 }
 
 shadowJar {

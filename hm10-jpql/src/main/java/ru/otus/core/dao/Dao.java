@@ -7,9 +7,9 @@ import java.util.Optional;
 public interface Dao<T, ID> {
     Optional<T> findById(ID id);
 
-    long insertUser(T entity);
+    long insert(T entity);
 
-    void updateUser(T entity);
+    void update(T entity);
 
     void insertOrUpdate(T entity);
 

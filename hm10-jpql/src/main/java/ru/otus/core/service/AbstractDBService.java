@@ -21,7 +21,7 @@ public abstract class AbstractDBService<T, ID> implements DBService<T, ID> {
         try (var sessionManager = dao.getSessionManager()) {
             sessionManager.beginSession();
             try {
-                var id = dao.insertUser(entity);
+                var id = dao.insert(entity);
                 sessionManager.commitSession();
                 logger.info("created entity: {}", id);
                 return id;
