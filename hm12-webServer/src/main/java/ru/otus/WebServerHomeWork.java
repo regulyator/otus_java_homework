@@ -5,11 +5,12 @@ import org.slf4j.LoggerFactory;
 import ru.otus.cachehw.HwCache;
 import ru.otus.cachehw.MyCache;
 import ru.otus.core.dao.Dao;
+import ru.otus.core.dao.UserDao;
 import ru.otus.core.model.AddressDataSet;
 import ru.otus.core.model.PhoneDataSet;
 import ru.otus.core.model.User;
 import ru.otus.core.service.impl.DbCachedServiceUser;
-import ru.otus.core.service.impl.DbServiceUser;
+import ru.otus.core.service.impl.DbServiceUserImpl;
 import ru.otus.hibernate.HibernateUtils;
 import ru.otus.hibernate.dao.UserDaoHibernate;
 import ru.otus.hibernate.sessionmanager.SessionManagerHibernate;
@@ -29,8 +30,8 @@ public class WebServerHomeWork {
         // Работа с пользователем
         try (var sessionManager = new SessionManagerHibernate(sessionFactory)) {
             //без кэша
-            Dao<User, Long> userDao = new UserDaoHibernate(sessionManager);
-            var dbServiceUserWoCache = new DbServiceUser(userDao);
+            UserDao<User, Long> userDao = new UserDaoHibernate(sessionManager);
+            var dbServiceUserWoCache = new DbServiceUserImpl(userDao);
 
 
             List<Long> newUserIdsWoCache = new ArrayList<>(100);

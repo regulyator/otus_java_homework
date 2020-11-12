@@ -11,6 +11,12 @@ dependencies {
     implementation 'ch.qos.logback:logback-classic'
     implementation 'org.hibernate:hibernate-core'
     implementation 'com.zaxxer:HikariCP'
+    implementation 'com.google.code.gson:gson'
+
+    implementation 'org.eclipse.jetty:jetty-server'
+    implementation 'org.eclipse.jetty:jetty-webapp'
+    implementation 'org.eclipse.jetty:jetty-security'
+    implementation 'org.freemarker:freemarker'
 
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
