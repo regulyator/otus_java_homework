@@ -9,6 +9,8 @@ import ru.otus.core.service.AbstractCachedDBService;
 import ru.otus.core.service.DBServiceUser;
 import ru.otus.core.service.DbServiceException;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -80,6 +82,19 @@ public class DbCachedServiceUser implements DBServiceUser<User, Long> {
             }
             return Optional.empty();
         }
+    }
 
+    @Override
+    public List<User> getAllUsers() {
+        try (var sessionManager = dao.getSessionManager()) {
+            sessionManager.beginSession();
+            try {
+                return dao.getAllUsers();
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+                sessionManager.rollbackSession();
+            }
+            return Collections.emptyList();
+        }
     }
 }

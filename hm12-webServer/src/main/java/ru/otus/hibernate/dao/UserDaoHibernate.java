@@ -8,6 +8,7 @@ import ru.otus.hibernate.exceptions.HibernateDaoException;
 import ru.otus.hibernate.sessionmanager.DatabaseSessionHibernate;
 import ru.otus.hibernate.sessionmanager.SessionManagerHibernate;
 
+import java.util.List;
 import java.util.Optional;
 
 public class UserDaoHibernate implements UserDao<User, Long> {
@@ -37,6 +38,18 @@ public class UserDaoHibernate implements UserDao<User, Long> {
                     .getSingleResult());
         } catch (Exception ex) {
             throw new HibernateDaoException("Error when try findByUsernameAdnPassword!", ex);
+        }
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        try {
+            return getSession()
+                    .getHibernateSession()
+                    .createQuery("Select u from User u", User.class)
+                    .getResultList();
+        } catch (Exception ex) {
+            throw new HibernateDaoException("Error when try getAllUsers!", ex);
         }
     }
 

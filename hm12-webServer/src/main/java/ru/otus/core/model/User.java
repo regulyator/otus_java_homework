@@ -3,6 +3,7 @@ package ru.otus.core.model;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "user")
@@ -83,14 +84,17 @@ public class User {
     }
 
     protected void updatePhonesUserParent(List<PhoneDataSet> phoneDataSet) {
-        phoneDataSet.forEach(x -> x.setUser(this));
+        if(Objects.nonNull(phoneDataSet)){
+            phoneDataSet.stream().filter(Objects::nonNull).forEach(x -> x.setUser(this));
+        }
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + username + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
                 ", addressDataSet=" + addressDataSet +
                 ", phoneDataSet=" + phoneDataSet +
                 '}';
