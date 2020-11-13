@@ -7,10 +7,10 @@
 <h4>Создать пользователя</h4>
 <form action="api/user/" method="post">
     Логин:<br>
-    <input type="text" name="Name">
+    <input name="name" type="text">
     <br><br>
     Пароль:<br>
-    <input type="text" name="password">
+    <input name="password" type="text">
     <br><br>
     <input type="submit" value="Создать">
 </form>
@@ -31,7 +31,7 @@
         <td>${user.username}</td>
         <td>${user.password}</td>
     </tr>
-    <#list>
+    </#list>
     </tbody>
 </table>
 </body>

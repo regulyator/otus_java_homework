@@ -5,16 +5,18 @@ import ru.otus.core.model.User;
 import ru.otus.core.service.DBServiceUser;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
+import java.util.Objects;
 
 
 public class UsersApiServlet extends HttpServlet {
+    private static final String USER_PARAMETER_NAME = "name";
+    private static final String USER_PARAMETER_PASSWORD = "password";
 
-    private static final int ID_PATH_PARAM_POSITION = 1;
 
     private final DBServiceUser<User, Long> dbServiceUser;
     private final Gson gson;
@@ -25,23 +27,27 @@ public class UsersApiServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        User user = dbServiceUser.get(extractIdFromRequest(request)).orElse(null);
-
-        response.setContentType("application/json;charset=UTF-8");
-        ServletOutputStream out = response.getOutputStream();
-        out.print(gson.toJson(user));
-    }
-
-    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        Map<String, String[]> requestParams = req.getParameterMap();
+        if (Objects.nonNull(requestParams)
+                && checkParamsForUserCreation(requestParams)) {
+            String username = requestParams.get(USER_PARAMETER_NAME)[0];
+            String password = requestParams.get(USER_PARAMETER_PASSWORD)[0];
+            createUser(username, password);
+            resp.sendRedirect("/users");
+        }
     }
 
-    private long extractIdFromRequest(HttpServletRequest request) {
-        String[] path = request.getPathInfo().split("/");
-        String id = (path.length > 1) ? path[ID_PATH_PARAM_POSITION] : String.valueOf(-1);
-        return Long.parseLong(id);
+    private void createUser(String username, String password) {
+        User user = new User(username, password, null, null);
+        dbServiceUser.save(user);
+    }
+
+    private boolean checkParamsForUserCreation(Map<String, String[]> requestParams) {
+        return requestParams.containsKey(USER_PARAMETER_NAME)
+                && requestParams.containsKey(USER_PARAMETER_PASSWORD)
+                && requestParams.get(USER_PARAMETER_NAME).length == 1
+                && requestParams.get(USER_PARAMETER_PASSWORD).length == 1;
     }
 
 }

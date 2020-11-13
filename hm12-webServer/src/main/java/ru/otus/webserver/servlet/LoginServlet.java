@@ -4,13 +4,14 @@ package ru.otus.webserver.servlet;
 import ru.otus.webserver.services.TemplateProcessor;
 import ru.otus.webserver.services.UserAuthService;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
@@ -20,6 +21,7 @@ public class LoginServlet extends HttpServlet {
     private static final String PARAM_PASSWORD = "password";
     private static final int MAX_INACTIVE_INTERVAL = 30;
     private static final String LOGIN_PAGE_TEMPLATE = "login.html";
+    private static final String UNAUTHORIZED_PARAM = "unauthorized";
 
 
     private final TemplateProcessor templateProcessor;
@@ -48,6 +50,11 @@ public class LoginServlet extends HttpServlet {
             response.sendRedirect("/users");
         } else {
             response.setStatus(SC_UNAUTHORIZED);
+            Map<String, Object> paramsMap = new HashMap<>();
+
+            paramsMap.put(UNAUTHORIZED_PARAM, true);
+            response.setContentType("text/html");
+            response.getWriter().println(templateProcessor.getPage(LOGIN_PAGE_TEMPLATE, paramsMap));
         }
 
     }

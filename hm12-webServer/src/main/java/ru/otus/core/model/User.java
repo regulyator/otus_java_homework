@@ -84,7 +84,7 @@ public class User {
     }
 
     protected void updatePhonesUserParent(List<PhoneDataSet> phoneDataSet) {
-        if(Objects.nonNull(phoneDataSet)){
+        if (Objects.nonNull(phoneDataSet)) {
             phoneDataSet.stream().filter(Objects::nonNull).forEach(x -> x.setUser(this));
         }
     }

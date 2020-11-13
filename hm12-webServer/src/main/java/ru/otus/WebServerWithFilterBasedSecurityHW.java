@@ -3,7 +3,6 @@ package ru.otus;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import ru.otus.core.model.User;
-import ru.otus.core.service.DBService;
 import ru.otus.core.service.DBServiceUser;
 import ru.otus.webserver.server.UsersWebServer;
 import ru.otus.webserver.server.UsersWebServerWithFilterBasedSecurity;
@@ -13,16 +12,10 @@ import ru.otus.webserver.services.UserAuthService;
 import ru.otus.webserver.services.UserAuthServiceImpl;
 
 /*
-    Полезные для демо ссылки
-
     // Стартовая страница
     http://localhost:8080
 
-    // Страница пользователей
-    http://localhost:8080/users
-
-    // REST сервис
-    http://localhost:8080/api/user/3
+    Имя пользователя и паль для входа user1 (или любой user{1-10}:) password
 */
 public class WebServerWithFilterBasedSecurityHW {
     private static final int WEB_SERVER_PORT = 8080;

@@ -5,6 +5,7 @@ import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.servlet.ErrorPageErrorHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import ru.otus.core.model.User;
@@ -17,10 +18,9 @@ import ru.otus.webserver.servlet.UsersServlet;
 public class UsersWebServerSimple implements UsersWebServer {
     private static final String START_PAGE_NAME = "index.html";
     private static final String COMMON_RESOURCES_DIR = "static";
-
+    protected final TemplateProcessor templateProcessor;
     private final DBServiceUser<User, Long> dbServiceUser;
     private final Gson gson;
-    protected final TemplateProcessor templateProcessor;
     private final Server server;
 
     public UsersWebServerSimple(int port, DBServiceUser<User, Long> dbServiceUser, Gson gson, TemplateProcessor templateProcessor) {
@@ -62,7 +62,7 @@ public class UsersWebServerSimple implements UsersWebServer {
         return server;
     }
 
-    protected Handler applySecurity(ServletContextHandler servletContextHandler, String ...paths) {
+    protected Handler applySecurity(ServletContextHandler servletContextHandler, String... paths) {
         return servletContextHandler;
     }
 
@@ -78,6 +78,13 @@ public class UsersWebServerSimple implements UsersWebServer {
         ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
         servletContextHandler.addServlet(new ServletHolder(new UsersServlet(templateProcessor, dbServiceUser)), "/users");
         servletContextHandler.addServlet(new ServletHolder(new UsersApiServlet(dbServiceUser, gson)), "/api/user/*");
+        initErrorHandler(servletContextHandler);
         return servletContextHandler;
+    }
+
+    private void initErrorHandler(ServletContextHandler servletContextHandler) {
+        ErrorPageErrorHandler errorHandler = new ErrorPageErrorHandler();
+        errorHandler.addErrorPage(401, "/error");
+        servletContextHandler.setErrorHandler(errorHandler);
     }
 }
