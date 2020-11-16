@@ -1,14 +1,13 @@
 package ru.otus.webserver.services;
 
 
-import ru.otus.core.model.User;
-import ru.otus.core.service.DBServiceUser;
+import ru.otus.data.core.service.DBServiceUser;
 
 public class UserAuthServiceImpl implements UserAuthService {
 
-    private final DBServiceUser<User, Long> dbServiceUser;
+    private final DBServiceUser dbServiceUser;
 
-    public UserAuthServiceImpl(DBServiceUser<User, Long> dbServiceUser) {
+    public UserAuthServiceImpl(DBServiceUser dbServiceUser) {
         this.dbServiceUser = dbServiceUser;
     }
 

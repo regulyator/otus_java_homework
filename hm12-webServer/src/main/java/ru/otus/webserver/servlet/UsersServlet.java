@@ -1,9 +1,7 @@
 package ru.otus.webserver.servlet;
 
-import ru.otus.core.model.User;
-import ru.otus.core.service.DBServiceUser;
+import ru.otus.data.core.service.DBServiceUser;
 import ru.otus.webserver.services.TemplateProcessor;
-
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,10 +15,10 @@ public class UsersServlet extends HttpServlet {
     private static final String USERS_PAGE_TEMPLATE = "users.html";
     private static final String TEMPLATE_ATTR_ALL_USERS = "users";
 
-    private final DBServiceUser<User, Long> dbServiceUser;
+    private final DBServiceUser dbServiceUser;
     private final TemplateProcessor templateProcessor;
 
-    public UsersServlet(TemplateProcessor templateProcessor, DBServiceUser<User, Long> dbServiceUser) {
+    public UsersServlet(TemplateProcessor templateProcessor, DBServiceUser dbServiceUser) {
         this.templateProcessor = templateProcessor;
         this.dbServiceUser = dbServiceUser;
     }

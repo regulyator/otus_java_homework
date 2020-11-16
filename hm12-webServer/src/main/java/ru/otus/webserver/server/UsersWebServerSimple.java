@@ -8,8 +8,7 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ErrorPageErrorHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import ru.otus.core.model.User;
-import ru.otus.core.service.DBServiceUser;
+import ru.otus.data.core.service.DBServiceUser;
 import ru.otus.helpers.FileSystemHelper;
 import ru.otus.webserver.services.TemplateProcessor;
 import ru.otus.webserver.servlet.UsersApiServlet;
@@ -19,11 +18,11 @@ public class UsersWebServerSimple implements UsersWebServer {
     private static final String START_PAGE_NAME = "index.html";
     private static final String COMMON_RESOURCES_DIR = "static";
     protected final TemplateProcessor templateProcessor;
-    private final DBServiceUser<User, Long> dbServiceUser;
+    private final DBServiceUser dbServiceUser;
     private final Gson gson;
     private final Server server;
 
-    public UsersWebServerSimple(int port, DBServiceUser<User, Long> dbServiceUser, Gson gson, TemplateProcessor templateProcessor) {
+    public UsersWebServerSimple(int port, DBServiceUser dbServiceUser, Gson gson, TemplateProcessor templateProcessor) {
         this.dbServiceUser = dbServiceUser;
         this.gson = gson;
         this.templateProcessor = templateProcessor;
