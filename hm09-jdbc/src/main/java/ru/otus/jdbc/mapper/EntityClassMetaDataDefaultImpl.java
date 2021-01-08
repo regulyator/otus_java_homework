@@ -1,9 +1,9 @@
 package ru.otus.jdbc.mapper;
 
-import ru.otus.core.annotations.Column;
-import ru.otus.core.annotations.Id;
-import ru.otus.core.annotations.Table;
-import ru.otus.core.exceptions.GetEntityClassMetaDataException;
+import ru.otus.data.core.annotations.Column;
+import ru.otus.data.core.annotations.Id;
+import ru.otus.data.core.annotations.Table;
+import ru.otus.data.core.exceptions.GetEntityClassMetaDataException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

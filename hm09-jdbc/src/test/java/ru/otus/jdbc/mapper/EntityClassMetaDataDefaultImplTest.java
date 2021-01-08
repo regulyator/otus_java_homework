@@ -1,7 +1,7 @@
 package ru.otus.jdbc.mapper;
 
 import org.junit.jupiter.api.Test;
-import ru.otus.core.exceptions.GetEntityClassMetaDataException;
+import ru.otus.data.core.exceptions.GetEntityClassMetaDataException;
 import ru.otus.jdbc.mapper.testclasses.User;
 import ru.otus.jdbc.mapper.testclasses.UserWithoutDefaultConstructor;
 import ru.otus.jdbc.mapper.testclasses.UserWithoutFields;

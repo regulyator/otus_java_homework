@@ -1,0 +1,29 @@
+﻿<html content="text/html;" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Login</title>
+</head>
+<body>
+<div class="top">
+    <#if unauthorized!false>
+    <img src="img/wronguser.png">
+    </#if>
+<br/>
+<form action="login" method="post">
+    <label>
+        login <br/>
+        <input name="login" placeholder="login" type="text" value="user1">
+    </label>
+    <br/>
+    <label>
+        password<br/>
+        <input name="password" placeholder="password" type="password">
+    </label>
+    <br/><br/>
+    <input type="submit" value="Вход">
+    <#if unauthorized!false>
+    <h4 style="color:red;">Неверные имя пользователя или пароль!</h4>
+    </#if>
+</form>
+</div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Управление пользователями</title>
+    <script>
+        function createUser() {
+            const userName = document.getElementById("newUsername").value;
+            const userPassword = document.getElementById("newPassword").value;
+            fetch('api/user/', {
+                method: 'POST',
+                headers: { 'Content-type': 'application/json' },
+                body: JSON.stringify({
+                    username: userName,
+                    password: userPassword
+                })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    }
+                })
+        }
+    </script>
+</head>
+
+<body>
+<h4>Создать пользователя</h4>
+<div>
+    Логин:<br>
+    <input type="text" id="newUsername">
+    <br><br>
+    Пароль:<br>
+    <input type="text" id="newPassword">
+    <br><br>
+    <button onclick="createUser()">Создать пользователя</button>
+</div>
+
+
+<h4>Список пользователей</h4>
+<table style="width: 400px">
+    <thead>
+    <tr>
+        <td style="width: 50px">Id</td>
+        <td style="width: 100px">Логин</td>
+        <td style="width: 100px">Пароль</td>
+    </tr>
+    </thead>
+    <tbody>
+    <#list users as user>
+    <tr>
+        <td>${user.id}</td>
+        <td>${user.username}</td>
+        <td>${user.password}</td>
+    </tr>
+    </#list>
+    </tbody>
+</table>
+</body>
+</html>

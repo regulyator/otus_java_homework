@@ -2,17 +2,17 @@ package ru.otus;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.otus.cachehw.HwCache;
-import ru.otus.cachehw.MyCache;
-import ru.otus.core.dao.Dao;
-import ru.otus.core.model.AddressDataSet;
-import ru.otus.core.model.PhoneDataSet;
-import ru.otus.core.model.User;
-import ru.otus.core.service.impl.DbCachedServiceUser;
-import ru.otus.core.service.impl.DbServiceUser;
-import ru.otus.hibernate.HibernateUtils;
-import ru.otus.hibernate.dao.UserDaoHibernate;
-import ru.otus.hibernate.sessionmanager.SessionManagerHibernate;
+import ru.otus.data.cachehw.HwCache;
+import ru.otus.data.cachehw.MyCache;
+import ru.otus.data.core.dao.Dao;
+import ru.otus.data.core.model.AddressDataSet;
+import ru.otus.data.core.model.PhoneDataSet;
+import ru.otus.data.core.model.User;
+import ru.otus.data.core.service.impl.DbCachedServiceUser;
+import ru.otus.data.core.service.impl.DbServiceUser;
+import ru.otus.data.hibernate.HibernateUtils;
+import ru.otus.data.hibernate.dao.UserDaoHibernate;
+import ru.otus.data.hibernate.sessionmanager.SessionManagerHibernate;
 
 import java.util.ArrayList;
 import java.util.List;

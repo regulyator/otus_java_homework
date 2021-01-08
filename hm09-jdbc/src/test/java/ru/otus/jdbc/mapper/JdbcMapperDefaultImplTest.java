@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.otus.core.util.ReflectionUtils;
+import ru.otus.data.core.util.ReflectionUtils;
 import ru.otus.jdbc.DbExecutor;
 import ru.otus.jdbc.mapper.testclasses.User;
 import ru.otus.jdbc.sessionmanager.DatabaseSessionJdbc;
