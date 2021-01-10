@@ -1,60 +1,48 @@
 package ru.otus.homework;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.function.Predicate;
 
 public class NumberSequence<T> {
+    private List<Thread> runningThreads = new ArrayList<>(2);
     private Collection<T> iterateCollection;
-    private T value;
+    private boolean sequenceStarted = false;
 
 
     public void goSequence(Collection<T> collection) {
         this.iterateCollection = collection;
 
-        Thread threadMaster = new Thread(this::masterProcess, "Thread 1");
-        Thread threadSlave = new Thread(this::slaveProcess, "Thread 2");
 
+        runningThreads.add(new Thread(() -> iterateSequence(true), "Thread 1"));
+        runningThreads.add(new Thread(() -> iterateSequence(false), "Thread 2"));
 
-        threadMaster.start();
-        threadSlave.start();
-
-        try {
-            threadMaster.join();
-            threadSlave.interrupt();
-            threadSlave.join();
-        } catch (InterruptedException e) {
-            threadMaster.interrupt();
-            threadSlave.interrupt();
-        }
+        runningThreads.forEach(Thread::start);
     }
 
-    private synchronized void masterProcess() {
+    private synchronized void iterateSequence(boolean master) {
         try {
+
             for (T number : iterateCollection) {
-                while (value != null) {
+                while (checkForWait(master)) {
                     wait();
                 }
-
                 System.out.println(Thread.currentThread().getName() + " - " + number);
-                value = number;
-                notifyAll();
+                sequenceStarted = master;
+                Thread.sleep(100);
+                this.notifyAll();
+
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (InterruptedException e) {
+            notifyAll();
+            Thread.currentThread().interrupt();
         }
+
     }
 
-    private synchronized void slaveProcess() {
-        while (!Thread.currentThread().isInterrupted()) {
-            try {
-                while (value == null) {
-                    wait();
-                }
-                System.out.println(Thread.currentThread().getName() + " - " + value);
-                value = null;
-                notifyAll();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
+    private boolean checkForWait(boolean master) {
+        return runningThreads.stream().filter(Predicate.not(Thread::isInterrupted)).count() > 1 && master == sequenceStarted;
+
     }
 }
