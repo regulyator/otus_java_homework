@@ -1,0 +1,22 @@
+plugins {
+    id 'com.github.johnrengelman.shadow'
+    id 'java'
+}
+
+sourceCompatibility = JavaVersion.VERSION_14
+targetCompatibility = JavaVersion.VERSION_14
+
+dependencies {
+    implementation("org.reflections:reflections:${Versions.reflections}")
+}
+
+shadowJar {
+    archiveBaseName.set('helloOtusHomeWork')
+    archiveVersion.set('0.1')
+    archiveClassifier.set('')
+    manifest {
+        attributes 'Main-Class': "ru.otus.App"
+    }
+}
+
+tasks.build.dependsOn tasks.shadowJar
