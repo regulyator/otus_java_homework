@@ -14,10 +14,11 @@ import java.util.stream.Collectors;
 
 public class AppComponentsContainerImpl implements AppComponentsContainer {
 
-    private final List<Object> appComponents = new ArrayList<>();
+    private final Map<Class<?>, Object> appComponents = new HashMap<>();
     private final Map<String, Object> appComponentsByName = new HashMap<>();
 
     public AppComponentsContainerImpl(Class<?> initialConfigClass) {
+        checkConfigClass(initialConfigClass);
         processConfig(initialConfigClass);
     }
 
@@ -36,7 +37,6 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
     }
 
     private void processConfig(Class<?> configClass) {
-        checkConfigClass(configClass);
         createComponents(configClass, Arrays.stream(configClass.getDeclaredMethods())
                 .filter(method -> method.isAnnotationPresent(AppComponent.class))
                 .sorted(Comparator.comparingInt(method -> method.getAnnotation(AppComponent.class).order()))
@@ -52,9 +52,7 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
 
     @Override
     public <C> C getAppComponent(Class<C> componentClass) {
-        return (C) appComponents.stream()
-                .filter(o -> componentClass.isAssignableFrom(o.getClass()))
-                .findFirst().orElse(null);
+        return (C) appComponents.getOrDefault(componentClass, null);
     }
 
     @Override
@@ -66,17 +64,14 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
         if (!configComponents.isEmpty()) {
             try {
                 Object configInstance = configClass.getConstructor().newInstance();
-                configComponents.forEach(method -> {
-                    instanceAndAddComponent(configInstance, method);
-
-                });
+                configComponents.stream().map(method -> instanceAndAddComponent(configInstance, method));
             } catch (Exception ex) {
                 throw new RuntimeException("Error when create component from config!");
             }
         }
     }
 
-    private void instanceAndAddComponent(Object configInstance, Method componentMethod) {
+    private Object instanceAndAddComponent(Object configInstance, Method componentMethod) {
         try {
             int componentDependencyCount = componentMethod.getParameterCount();
             Object[] resultDependencies = new Object[componentDependencyCount];
@@ -91,8 +86,9 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
                 }
             }
             Object componentInstance = componentMethod.invoke(configInstance, resultDependencies);
-            appComponents.add(componentInstance);
+            appComponents.put(componentInstance.getClass(), componentInstance);
             appComponentsByName.put(componentMethod.getAnnotation(AppComponent.class).name(), componentInstance);
+            return componentInstance;
         } catch (Exception ex) {
             throw new ComponentInitializeException(String.format("Error when create component instance!  %s", componentMethod.getAnnotation(AppComponent.class).name()));
         }
